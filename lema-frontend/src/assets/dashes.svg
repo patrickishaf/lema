@@ -1,0 +1,5 @@
+<svg width="200" height="200">
+  <rect x="1" y="1" width="198" height="199" 
+    stroke="black" stroke-width="5" fill="none"
+    stroke-dasharray="20 10" /> <!-- Dash length = 20, Gap length = 10 -->
+</svg>
