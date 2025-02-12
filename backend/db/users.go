@@ -1,6 +1,6 @@
 package db
 
-import "github.com/patrickishaf/lema-be/models"
+import "github.com/patrickishaf/lema/models"
 
 func FindUsers(limit int, offset int) []models.User {
 	var users []models.User

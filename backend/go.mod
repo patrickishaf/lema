@@ -1,4 +1,4 @@
-module github.com/patrickishaf/lema-be
+module github.com/patrickishaf/lema
 
 go 1.23.4
 

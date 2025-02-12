@@ -30,7 +30,7 @@ Ensure you have the following installed on your machine:
 ### Steps
 1. Clone the repository
 ```bash 
-git clone https://github.com/patrickishaf/lema-be.git && cd lema-be
+git clone https://github.com/patrickishaf/lema.git && cd lema-be
 ```
 
 2. Install dependencies

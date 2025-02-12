@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/patrickishaf/lema-be/models"
+	"github.com/patrickishaf/lema/models"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
