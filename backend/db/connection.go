@@ -2,6 +2,7 @@ package db
 
 import (
 	"log"
+	"os"
 
 	"github.com/patrickishaf/lema-be/models"
 	"gorm.io/driver/sqlite"
@@ -11,7 +12,8 @@ import (
 var db *gorm.DB
 
 func InitializeDb() {
-	database, err := gorm.Open(sqlite.Open("main.db"), &gorm.Config{})
+	dbName := os.Getenv("DB_NAME")
+	database, err := gorm.Open(sqlite.Open(dbName), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect to db")
 	}
