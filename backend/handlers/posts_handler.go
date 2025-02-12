@@ -15,12 +15,12 @@ import (
 func getPostsByUserId(c *gin.Context) {
 	userId, err := strconv.Atoi(c.Query("userId"))
 	if err != nil {
-		c.IndentedJSON(http.StatusBadRequest, common.CreateErrorResponse("invalid id param"))
+		common.SendResponse(c, http.StatusBadRequest, "invalid ID param", "failed to get posts by user id")
 		return
 	}
 
 	posts := db.FindPostsByUser(uint(userId))
-	c.IndentedJSON(http.StatusOK, models.ReversePosts(posts))
+	common.SendResponse(c, http.StatusOK, models.ReversePosts(posts), "posts fetched successfully")
 }
 
 func createPost(c *gin.Context) {
@@ -28,46 +28,46 @@ func createPost(c *gin.Context) {
 
 	err := c.ShouldBindJSON(&reqBody)
 	if err != nil {
-		c.IndentedJSON(http.StatusBadRequest, "invalid request body")
+		common.SendResponse(c, http.StatusBadRequest, "invalid request body", "failed to create post")
 		return
 	}
 
 	errors := common.ValidateStruct(reqBody)
 	if errors != nil {
-		c.IndentedJSON(http.StatusBadRequest, errors)
+		common.SendResponse(c, http.StatusBadRequest, errors, "failed to create post")
 		return
 	}
 
 	newPost, err := db.InsertPost(&models.Post{
-		AuthorId: reqBody.AuthorId,
-		Title:    reqBody.Title,
-		Body:     reqBody.Body,
+		UserID: reqBody.UserID,
+		Title:  reqBody.Title,
+		Body:   reqBody.Body,
 	})
 	if err != nil {
-		c.IndentedJSON(http.StatusInternalServerError, err)
+		common.SendResponse(c, http.StatusInternalServerError, err, "failed to create post")
 		return
 	}
 
-	c.IndentedJSON(http.StatusCreated, newPost)
+	common.SendResponse(c, http.StatusCreated, newPost, "post created succesfully")
 }
 
 func deletePost(c *gin.Context) {
 	postId, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
-		c.IndentedJSON(http.StatusBadRequest, common.CreateErrorResponse("invalid post id"))
+		common.SendResponse(c, http.StatusBadRequest, []string{}, "invalid post id")
 		return
 	}
 
 	existingPost := db.FindPostById(uint(postId))
 	if existingPost.ID == 0 {
 		errMsg := fmt.Sprintf("post with id %d not found", postId)
-		c.IndentedJSON(http.StatusNotFound, errMsg)
+		common.SendResponse(c, http.StatusNotFound, []string{}, errMsg)
 		return
 	}
 
 	db.DeletePost(uint(postId))
 	successMsg := fmt.Sprintf("post with id %d deleted successfully", postId)
-	c.IndentedJSON(http.StatusOK, successMsg)
+	common.SendResponse(c, http.StatusOK, existingPost, successMsg)
 }
 
 func RegisterPostHandlers(router *gin.Engine) {

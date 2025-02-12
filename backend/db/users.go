@@ -4,7 +4,7 @@ import "github.com/patrickishaf/lema-be/models"
 
 func FindUsers(limit int, offset int) []models.User {
 	var users []models.User
-	db.Find(&users).Limit(limit).Offset(offset)
+	db.Order("id asc, email").Find(&users).Limit(limit).Offset(offset)
 	return users
 }
 
