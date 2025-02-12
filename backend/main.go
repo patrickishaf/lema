@@ -18,7 +18,6 @@ import (
 	"github.com/patrickishaf/lema/handlers"
 )
 
-// TODO: Print the value of c.Query and see if it is a map or struct that you can validate
 func main() {
 	err := godotenv.Load()
 	if err != nil {
