@@ -1,7 +1,7 @@
 import "../styles/UsersPostsPage.css";
+import prevBtn from "../assets/prevbtn.svg";
 import { useState } from "react";
 import UserPostCard from "./UserPostCard";
-import useVector from "@/hooks/useVector";
 import uuid from "react-uuid";
 import NewPostBtn from "./NewPostBtn";
 import { useNavigate, useParams } from "react-router-dom";
@@ -29,7 +29,6 @@ export default function UsersPostsPage() {
     mutationFn: postsService.deletePostById,
     onSuccess: queryClient.invalidateQueries(['user', userId])
   })
-  const {prevBtn} = useVector();
 
   return (
     <div className="users-posts-page pt-44 pb-44">

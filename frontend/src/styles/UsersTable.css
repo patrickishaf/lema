@@ -1,3 +1,8 @@
+:root {
+  --mobile-cell-1: 40%;
+  --mobile-cell-2: 60%;
+}
+
 .table-main {
   border-color: #E9EAEB;
   border-width: 1px;
@@ -12,12 +17,30 @@
   width: 23.3%
 }
 
+@media only screen and (max-width: 640px) {
+  .table-main .header-cell.one {
+    width: var(--mobile-cell-1)
+  }
+}
+
 .table-main .header-cell.two {
   width: 30.8%;
 }
 
+@media only screen and (max-width: 640px) {
+  .table-main .header-cell.two {
+    width: var(--mobile-cell-1)
+  }
+}
+
 .table-main .header-cell.three {
   width: calc(100% - 23.3% - 30.8%);
+}
+
+@media only screen and (max-width: 640px) {
+  .table-main .header-cell.three {
+    display: none;
+  }
 }
 
 .table-main .detail-row {
@@ -38,10 +61,37 @@
   width: 23.3%
 }
 
+@media only screen and (max-width: 640px) {
+  .table-main .detail-cell.one {
+    width: var(--mobile-cell-1)
+  }
+}
+
 .table-main .detail-cell.two {
   width: 30.8%;
 }
 
+@media only screen and (max-width: 640px) {
+  .table-main .detail-cell.two {
+    width: var(--mobile-cell-2);
+  }
+}
+
 .table-main .detail-cell.three {
   width: calc(100% - 23.3% - 30.8%);
+}
+
+@media only screen and (max-width: 640px) {
+  .table-main .detail-cell.three {
+    display: none;
+  }
+}
+
+.table-main .detail-cell .detail-txt {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

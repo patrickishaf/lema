@@ -57,9 +57,15 @@ export default function UsersTable() {
                 <div key={uuid()} className="detail-row flex items-center border-b cursor-pointer" onClick={() => {
                   openRoute(`${routeNames.posts}/${id}`);
                 }}>
-                  <p className="detail-cell user-name one font-medium text-sm">{name}</p>
-                  <p className="detail-cell user-email two text-sm">{email}</p>
-                  <p className="detail-cell user-address three text-sm">{address}</p>
+                  <div className="detail-cell one">
+                    <p className="detail-txt user-name font-medium text-sm">{name}</p>
+                  </div>
+                  <div className="detail-cell two">
+                    <p className="detail-txt user-email text-sm">{email}</p>
+                  </div>
+                  <div className="detail-cell three">
+                    <p className="detail-txt user-address text-sm">{address}</p>
+                  </div>
                 </div>
               ))
         }
