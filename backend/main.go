@@ -13,6 +13,7 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	"github.com/patrickishaf/lema/common"
 	"github.com/patrickishaf/lema/db"
 	"github.com/patrickishaf/lema/handlers"
 )
@@ -34,6 +35,10 @@ func main() {
 		AllowCredentials: true,
 		MaxAge:           12 * 60 * 60,
 	}))
+
+	logger := common.InitializeLogger()
+	router.Use(common.LogRequests(logger))
+
 	handlers.RegisterUserHandlers(router)
 	handlers.RegisterPostHandlers(router)
 	handlers.RegisterHealthCheckHandlers(router)
