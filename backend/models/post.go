@@ -4,8 +4,7 @@ import "time"
 
 type Post struct {
 	ID        uint      `json:"id" gorm:"primaryKey"`
-	AuthorID  uint      `json:"author_id"`
-	Author    User      `gorm:"foreignKey:AuthorID"`
+	AuthorId  uint      `json:"author_id"`
 	Title     string    `json:"title"`
 	Body      string    `json:"body"`
 	CreatedAt time.Time `json:"created_at" gorm:"autoCreateTime"`
