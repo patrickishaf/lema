@@ -17,22 +17,25 @@ import { useQuery } from "@tanstack/react-query";
 import userService from "@/services/user.service";
 import Loader from "./Loader";
 import uuid from "react-uuid";
+import PaginationComponent from "./PaginationComponent";
 
 export default function UsersTable() {
-  const { data, isLoading, error } = useQuery({
-    queryFn: () => userService.getUsers(),
-    queryKey: ["users"]
-  });
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const openRoute = useNavigate();
+
+  const { data, isLoading, error } = useQuery({
+    queryFn: () => userService.getUsers(currentPage - 1),
+    queryKey: ["users", currentPage],
+    enabled: !!currentPage,
+  });
 
   useEffect(() => {
     setUsers(getUsers());
   }, []);
 
   function changePage(page) {
-    const pageIndex = page - 1;
+    const pageIndex = page;
     setCurrentPage(pageIndex);
   }
 
@@ -71,22 +74,13 @@ export default function UsersTable() {
         }
       </main>
       <div className="pagination-container">
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious href="#" className="custom-pale-txt" />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationLink href="#" isActive className="custom-pale-txt">1</PaginationLink>
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationEllipsis />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationNext href="#" className="custom-pale-txt" />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
+      {
+        data && data.totalPages && <PaginationComponent
+          totalPages={data.data.totalPages}
+          onPageChange={changePage}
+          page={currentPage}
+        />
+      }
       </div>
     </section>
   )
