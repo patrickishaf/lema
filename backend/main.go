@@ -15,6 +15,7 @@ func main() {
 		panic("failed to load env variables")
 	}
 	db.InitializeDb()
+	defer db.CloseDB()
 
 	router := gin.Default()
 	router.Use(cors.New(cors.Config{
