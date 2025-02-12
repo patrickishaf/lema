@@ -25,7 +25,7 @@ export default function UsersTable() {
   const openRoute = useNavigate();
 
   const { data, isLoading, error } = useQuery({
-    queryFn: () => userService.getUsers(currentPage - 1),
+    queryFn: () => userService.getUsers(currentPage),
     queryKey: ["users", currentPage],
     enabled: !!currentPage,
   });
@@ -76,7 +76,7 @@ export default function UsersTable() {
       <div className="pagination-container">
       {
         data && data.totalPages && <PaginationComponent
-          totalPages={data.data.totalPages}
+          totalPages={data.totalPages}
           onPageChange={changePage}
           page={currentPage}
         />
