@@ -39,9 +39,9 @@ func createPost(c *gin.Context) {
 	}
 
 	newPost, err := db.InsertPost(&models.Post{
-		AuthorId: reqBody.AuthorId,
-		Title:    reqBody.Title,
-		Body:     reqBody.Body,
+		UserID: reqBody.UserID,
+		Title:  reqBody.Title,
+		Body:   reqBody.Body,
 	})
 	if err != nil {
 		c.IndentedJSON(http.StatusInternalServerError, err)

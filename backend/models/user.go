@@ -10,4 +10,5 @@ type User struct {
 	State    string `json:"state"`
 	City     string `json:"city"`
 	ZipCode  string `json:"zip_code"`
+	Posts    []Post `json:"posts"`
 }
