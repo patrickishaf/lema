@@ -11,8 +11,16 @@ import (
 )
 
 func getUsers(c *gin.Context) {
-	pageNumber, _ := strconv.Atoi(c.DefaultQuery("pageNumber", "0"))
-	pageSize, _ := strconv.Atoi(c.DefaultQuery("pageSize", "10"))
+	pageNumber, err := strconv.Atoi(c.DefaultQuery("pageNumber", "0"))
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, "failed to get users. invalid page number")
+		return
+	}
+	pageSize, err := strconv.Atoi(c.DefaultQuery("pageSize", "10"))
+	if err != nil {
+		c.IndentedJSON(http.StatusBadRequest, "failed to get users. invalid page size")
+		return
+	}
 
 	offset := pageNumber * pageSize
 	users := db.FindUsers(pageSize, offset)
