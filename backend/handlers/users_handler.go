@@ -49,7 +49,6 @@ func getUserById(c *gin.Context) {
 	}
 
 	existingUser := db.FindUserById(uint(userID))
-	c.IndentedJSON(http.StatusOK, existingUser)
 	common.SendResponse(c, http.StatusOK, existingUser, "user fetched successfully")
 }
 
