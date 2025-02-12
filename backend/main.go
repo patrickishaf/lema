@@ -38,7 +38,7 @@ func main() {
 	handlers.RegisterPostHandlers(router)
 
 	server := &http.Server{
-		Addr:    ":8080",
+		Addr:    os.Getenv("PORT"),
 		Handler: router,
 	}
 
