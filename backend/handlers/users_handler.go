@@ -6,8 +6,8 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	common "github.com/patrickishaf/lema/common"
-	db "github.com/patrickishaf/lema/db"
+	"github.com/patrickishaf/lema/common"
+	"github.com/patrickishaf/lema/db"
 )
 
 func getUsers(c *gin.Context) {
