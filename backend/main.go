@@ -37,8 +37,11 @@ func main() {
 	handlers.RegisterUserHandlers(router)
 	handlers.RegisterPostHandlers(router)
 
+	port := fmt.Sprintf(":%s", os.Getenv("PORT"))
+	fmt.Println("THE PORT IS...")
+	fmt.Println(port)
 	server := &http.Server{
-		Addr:    os.Getenv("PORT"),
+		Addr:    port,
 		Handler: router,
 	}
 
