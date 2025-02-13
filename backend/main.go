@@ -1,14 +1,10 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
-	"os/signal"
-	"syscall"
-	"time"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -24,6 +20,7 @@ func main() {
 		log.Fatal("failed to load env variables")
 	}
 	db.InitializeDb()
+	defer db.CloseDB()
 
 	router := gin.Default()
 	router.Use(cors.New(cors.Config{
@@ -42,31 +39,14 @@ func main() {
 	handlers.RegisterPostHandlers(router)
 	handlers.RegisterHealthCheckHandlers(router)
 
+	port := fmt.Sprintf(":%s", os.Getenv("PORT"))
 	server := &http.Server{
-		Addr:    ":8080",
+		Addr:    port,
 		Handler: router,
 	}
 
-	go func() {
-		fmt.Println("server is running on :8080...")
-		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
-			log.Fatalf("Server error: %v", err)
-		}
-	}()
-
-	stop := make(chan os.Signal, 1)
-	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
-
-	<-stop
-	fmt.Println("\nshutting down the server...")
-
-	db.CloseDB()
-
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-
-	if err := server.Shutdown(ctx); err != nil {
-		log.Fatalf("server shutdown error: %v", err)
+	if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+		log.Fatalf("Server error: %v", err)
 	}
-	fmt.Println("server has been shut down.")
+	fmt.Println("server is running on :8080...")
 }
