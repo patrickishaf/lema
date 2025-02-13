@@ -7,10 +7,16 @@ import (
 	"github.com/patrickishaf/lema/common"
 )
 
-func healthCheck(c *gin.Context) {
+type HealthCheckHandler struct{}
+
+func NewHealthCheckHandler() *HealthCheckHandler {
+	return &HealthCheckHandler{}
+}
+
+func (h *HealthCheckHandler) healthCheck(c *gin.Context) {
 	common.SendResponse(c, http.StatusOK, "server is healthy", "health check passed")
 }
 
-func RegisterHealthCheckHandlers(router *gin.Engine) {
-	router.GET("/health", healthCheck)
+func (h *HealthCheckHandler) RegisterRequestHandlers(router *gin.Engine) {
+	router.GET("/health", h.healthCheck)
 }

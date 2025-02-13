@@ -41,10 +41,9 @@ func main() {
 
 	handlers.NewPostsHandler(db.NewPostsRepository()).RegisterRequestHandlers(router)
 	handlers.NewUsersHandler(db.NewUserRespository()).RegisterRequestHandlers(router)
-	handlers.RegisterHealthCheckHandlers(router)
+	handlers.NewHealthCheckHandler().RegisterRequestHandlers(router)
 
 	port := os.Getenv("PORT")
-	fmt.Println("THE PORT IS ", port)
 	if port == "" {
 		port = "3000"
 	}
