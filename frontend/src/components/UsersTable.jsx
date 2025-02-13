@@ -54,7 +54,7 @@ export default function UsersTable() {
               ?
                 <div>{error.message}</div>
               :
-              data?.data.map(({ id, name, email, address }) => (
+              data && data.data && data?.data.map(({ id, name, email, address }) => (
                 <div key={uuid()} className="detail-row flex items-center border-b cursor-pointer" onClick={() => {
                   openRoute(`${routeNames.posts}/${id}`);
                 }}>
