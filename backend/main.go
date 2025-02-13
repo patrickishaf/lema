@@ -12,17 +12,12 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 	"github.com/patrickishaf/lema/common"
 	"github.com/patrickishaf/lema/db"
 	"github.com/patrickishaf/lema/handlers"
 )
 
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("failed to load env variables")
-	}
 	db.InitializeDb()
 
 	router := gin.Default()
@@ -43,6 +38,7 @@ func main() {
 	handlers.RegisterHealthCheckHandlers(router)
 
 	port := os.Getenv("PORT")
+	fmt.Println("THE PORT IS ", port)
 	if port == "" {
 		port = "3000"
 	}
