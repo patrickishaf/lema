@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"log"
 	"math"
 	"net/http"
@@ -58,7 +59,11 @@ func (h *UsersHandler) getUsers(c *gin.Context) {
 }
 
 func (h *UsersHandler) getUserCount(c *gin.Context) {
-	numberOfUsers := db.FindUserCount()
+	numberOfUsers, err := h.repo.GetUserCount()
+	if err != nil {
+		fmt.Printf("failed to get user count. error: %v", err)
+		common.SendResponse(c, http.StatusInternalServerError, err, "failed to get user count")
+	}
 	common.SendResponse(c, http.StatusOK, numberOfUsers, "user count retrieved successfully")
 }
 
