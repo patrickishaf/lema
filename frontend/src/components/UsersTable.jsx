@@ -1,5 +1,5 @@
 import "../styles/UsersTable.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { getUsers } from "../data/users";
 import {
   Pagination,
@@ -20,6 +20,7 @@ import PaginationComponent from "./PaginationComponent";
 
 export default function UsersTable() {
   const [currentPage, setCurrentPage] = useState(1);
+  const [userList, setUserList] = useState([]);
   const openRoute = useNavigate();
 
   const { data: users, isLoading, error } = useQuery({
@@ -31,6 +32,12 @@ export default function UsersTable() {
   function changePage(page) {
     setCurrentPage(page);
   }
+
+  useEffect(() => {
+    if (!users || !users.data || users.data.length === 0) return;
+
+    setUserList(users.data)
+  }, [users]);
 
   return (
     <section className="users-table w-full flex flex-col items-end">
@@ -49,7 +56,7 @@ export default function UsersTable() {
               ?
                 <div>{error.message}</div>
               :
-              users && users.data && Array.isArray(users.data) && users.data.map(({ id, name, email, address }) => (
+              userList.map(({ id, name, email, address }) => (
                 <div key={uuid()} className="detail-row flex items-center border-b cursor-pointer" onClick={() => {
                   openRoute(`${routeNames.posts}/${id}`);
                 }}>
