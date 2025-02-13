@@ -43,6 +43,7 @@ func (h *UsersHandler) getUsers(c *gin.Context) {
 	if err != nil {
 		log.Printf("failed to get user count. error: %v", err)
 		common.SendResponse(c, http.StatusInternalServerError, err, "fialed to get user count")
+		return
 	}
 	totalPages := math.Ceil(float64(count) / float64(pageSize))
 
@@ -63,6 +64,7 @@ func (h *UsersHandler) getUserCount(c *gin.Context) {
 	if err != nil {
 		fmt.Printf("failed to get user count. error: %v", err)
 		common.SendResponse(c, http.StatusInternalServerError, err, "failed to get user count")
+		return
 	}
 	common.SendResponse(c, http.StatusOK, numberOfUsers, "user count retrieved successfully")
 }
@@ -70,11 +72,17 @@ func (h *UsersHandler) getUserCount(c *gin.Context) {
 func (h *UsersHandler) getUserById(c *gin.Context) {
 	userID, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
+		fmt.Printf("failed to get user by ID. error: %v", err)
 		common.SendResponse(c, http.StatusBadRequest, "invalid id param", "failed to get user")
 		return
 	}
 
-	existingUser := db.FindUserById(uint(userID))
+	existingUser, err := h.repo.FindUserById(uint(userID))
+	if err != nil {
+		fmt.Printf("failed to get user by ID. error: %v", err)
+		common.SendResponse(c, http.StatusInternalServerError, err, "failed to get user by ID")
+		return
+	}
 	common.SendResponse(c, http.StatusOK, existingUser, "user fetched successfully")
 }
 
