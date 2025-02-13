@@ -13,7 +13,17 @@ import (
 	"github.com/patrickishaf/lema/models"
 )
 
-func getPostsByUserId(c *gin.Context) {
+type PostsHandler struct {
+	repo *db.PostsRepository
+}
+
+func NewPostsHandler(repo *db.PostsRepository) *PostsHandler {
+	return &PostsHandler{
+		repo: repo,
+	}
+}
+
+func (h *PostsHandler) getPostsByUserId(c *gin.Context) {
 	userId, err := strconv.Atoi(c.Query("userId"))
 	if err != nil {
 		common.SendResponse(c, http.StatusBadRequest, "invalid ID param", "failed to get posts by user id")
@@ -52,7 +62,7 @@ func getPostsByUserId(c *gin.Context) {
 	common.SendResponse(c, http.StatusOK, data, "posts fetched successfully")
 }
 
-func createPost(c *gin.Context) {
+func (h *PostsHandler) createPost(c *gin.Context) {
 	var reqBody dtos.CreatePostReqBody
 
 	err := c.ShouldBindJSON(&reqBody)
@@ -80,7 +90,7 @@ func createPost(c *gin.Context) {
 	common.SendResponse(c, http.StatusCreated, newPost, "post created succesfully")
 }
 
-func deletePost(c *gin.Context) {
+func (h *PostsHandler) deletePost(c *gin.Context) {
 	postId, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		common.SendResponse(c, http.StatusBadRequest, []string{}, "invalid post id")
@@ -99,8 +109,8 @@ func deletePost(c *gin.Context) {
 	common.SendResponse(c, http.StatusOK, existingPost, successMsg)
 }
 
-func RegisterPostHandlers(router *gin.Engine) {
-	router.GET("/posts", getPostsByUserId)
-	router.POST("/posts", createPost)
-	router.DELETE("/posts/:id", deletePost)
+func (h *PostsHandler) RegisterRequestHandlers(router *gin.Engine) {
+	router.GET("/posts", h.getPostsByUserId)
+	router.POST("/posts", h.createPost)
+	router.DELETE("/posts/:id", h.deletePost)
 }

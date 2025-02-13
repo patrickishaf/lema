@@ -1,6 +1,8 @@
 package db
 
 import (
+	"log"
+
 	"github.com/patrickishaf/lema/models"
 	"gorm.io/gorm"
 )
@@ -19,8 +21,14 @@ func (r *PostsRepository) FindPostById(id uint) (*models.Post, error) {
 	return &models.Post{}, nil
 }
 
-func (r *PostsRepository) FindPostsByUser(userID uint, limit int, offset int) (*[]models.Post, error) {
-	return &[]models.Post{}, nil
+func (r *PostsRepository) FindPostsByUserID(userID uint, limit int, offset int) (*[]models.Post, error) {
+	var posts []models.Post
+	err := r.db.Limit(limit).Offset(offset).Order("id desc").Find(&posts).Error
+	if err != nil {
+		log.Printf("error in PostsRepository.FindPostsByUserID: %v", err)
+		return nil, err
+	}
+	return &posts, nil
 }
 
 func (r *PostsRepository) findPostCountByUser(userID uint) int64 {

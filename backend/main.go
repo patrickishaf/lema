@@ -40,7 +40,7 @@ func main() {
 	router.Use(common.LogRequests(logger))
 
 	handlers.RegisterUserHandlers(router)
-	handlers.RegisterPostHandlers(router)
+	handlers.NewPostsHandler(db.NewPostsRepository()).RegisterRequestHandlers(router)
 	handlers.RegisterHealthCheckHandlers(router)
 
 	port := os.Getenv("PORT")
