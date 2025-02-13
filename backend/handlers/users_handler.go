@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"log"
 	"math"
 	"net/http"
 	"strconv"
@@ -32,13 +33,16 @@ func (h *UsersHandler) getUsers(c *gin.Context) {
 		return
 	}
 
-	offset := (pageNumber - 1) * pageSize
-	users, err := db.FindUsers(pageSize, offset)
+	users, err := h.repo.FindAll(pageNumber, pageSize)
 	if err != nil {
 		common.SendResponse(c, http.StatusInternalServerError, err, "failed to get users")
 		return
 	}
-	count := db.FindUserCount()
+	count, err := h.repo.GetUserCount()
+	if err != nil {
+		log.Printf("failed to get user count. error: %v", err)
+		common.SendResponse(c, http.StatusInternalServerError, err, "fialed to get user count")
+	}
 	totalPages := math.Ceil(float64(count) / float64(pageSize))
 
 	data := map[string]any{
