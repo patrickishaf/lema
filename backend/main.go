@@ -39,8 +39,8 @@ func main() {
 	logger := common.InitializeLogger()
 	router.Use(common.LogRequests(logger))
 
-	handlers.RegisterUserHandlers(router)
 	handlers.NewPostsHandler(db.NewPostsRepository()).RegisterRequestHandlers(router)
+	handlers.NewUsersHandler(db.NewUserRespository()).RegisterRequestHandlers(router)
 	handlers.RegisterHealthCheckHandlers(router)
 
 	port := os.Getenv("PORT")

@@ -10,7 +10,17 @@ import (
 	"github.com/patrickishaf/lema/db"
 )
 
-func getUsers(c *gin.Context) {
+type UsersHandler struct {
+	repo *db.UserRepository
+}
+
+func NewUsersHandler(repo *db.UserRepository) *UsersHandler {
+	return &UsersHandler{
+		repo: repo,
+	}
+}
+
+func (h *UsersHandler) getUsers(c *gin.Context) {
 	pageNumber, err := strconv.Atoi(c.DefaultQuery("pageNumber", "1"))
 	if err != nil {
 		common.SendResponse(c, http.StatusBadRequest, "invalid page number", "failed to get users")
@@ -43,12 +53,12 @@ func getUsers(c *gin.Context) {
 	common.SendResponse(c, http.StatusOK, data, "users fetched sucessfully")
 }
 
-func getUserCount(c *gin.Context) {
+func (h *UsersHandler) getUserCount(c *gin.Context) {
 	numberOfUsers := db.FindUserCount()
 	common.SendResponse(c, http.StatusOK, numberOfUsers, "user count retrieved successfully")
 }
 
-func getUserById(c *gin.Context) {
+func (h *UsersHandler) getUserById(c *gin.Context) {
 	userID, err := strconv.Atoi(c.Param("id"))
 	if err != nil {
 		common.SendResponse(c, http.StatusBadRequest, "invalid id param", "failed to get user")
@@ -59,8 +69,8 @@ func getUserById(c *gin.Context) {
 	common.SendResponse(c, http.StatusOK, existingUser, "user fetched successfully")
 }
 
-func RegisterUserHandlers(router *gin.Engine) {
-	router.GET("/users", getUsers)
-	router.GET("/users/count", getUserCount)
-	router.GET("/users/:id", getUserById)
+func (h *UsersHandler) RegisterRequestHandlers(router *gin.Engine) {
+	router.GET("/users", h.getUsers)
+	router.GET("/users/count", h.getUserCount)
+	router.GET("/users/:id", h.getUserById)
 }
