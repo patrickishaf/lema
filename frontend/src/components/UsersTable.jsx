@@ -1,7 +1,6 @@
 import "../styles/UsersTable.css";
 import { useEffect, useState } from "react";
 import { getUsers } from "../data/users";
-import PaginationBtns from "./PaginationBtns";
 import {
   Pagination,
   PaginationContent,
@@ -35,8 +34,7 @@ export default function UsersTable() {
   }, []);
 
   function changePage(page) {
-    const pageIndex = page;
-    setCurrentPage(pageIndex);
+    setCurrentPage(page);
   }
 
   return (
