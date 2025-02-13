@@ -8,7 +8,7 @@ import (
 
 func FindUsers(limit int, offset int) ([]models.User, error) {
 	var users []models.User
-	err := db.Limit(limit).Offset(offset).Order("id asc, email").Find(&users).Error
+	err := getDB().Limit(limit).Offset(offset).Order("id asc, email").Find(&users).Error
 	if err != nil {
 		log.Printf("failed to find users. error: %v", err)
 		return nil, err
@@ -24,6 +24,6 @@ func FindUserCount() int64 {
 
 func FindUserById(id uint) models.User {
 	var user models.User
-	db.Where(&models.User{ID: id}).First(&user)
+	getDB().Where(&models.User{ID: id}).First(&user)
 	return user
 }

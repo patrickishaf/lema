@@ -37,6 +37,9 @@ func getUsers(c *gin.Context) {
 		"totalPages": totalPages,
 		"data":       users,
 	}
+	if pageNumber > int(totalPages) {
+		data["pageNumber"] = totalPages
+	}
 	common.SendResponse(c, http.StatusOK, data, "users fetched sucessfully")
 }
 
