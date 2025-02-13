@@ -30,7 +30,7 @@ Ensure you have the following installed on your machine:
 ### Steps
 1. Clone the repository
 ```bash 
-git clone https://github.com/patrickishaf/lema.git && cd lema-be
+git clone https://github.com/patrickishaf/lema.git && cd lema
 ```
 
 2. Install dependencies
@@ -38,12 +38,14 @@ git clone https://github.com/patrickishaf/lema.git && cd lema-be
 go mod tidy
 ```
 
-3. Start the application
+3. Create a .env file with the environment variables declared in env.example
+
+4. Start the application
 ```bash
 go run main.go
 ```
 
-4. The application should now be running on your localhost and on port 8080
+5. The application should now be running on your localhost and on port `8080`
 
 ---
 
