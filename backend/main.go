@@ -42,9 +42,8 @@ func main() {
 	handlers.RegisterPostHandlers(router)
 	handlers.RegisterHealthCheckHandlers(router)
 
-	port := fmt.Sprintf(":%s", os.Getenv("PORT"))
 	server := &http.Server{
-		Addr:    port,
+		Addr:    ":8080",
 		Handler: router,
 	}
 
