@@ -1,17 +1,12 @@
-# fly.toml app configuration file generated for lema on 2025-02-12T18:42:23Z
+# fly.toml app configuration file generated for lemabackend on 2025-02-13T07:31:37Z
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'lema'
+app = 'lemabackend'
 primary_region = 'jnb'
 
 [build]
-  [build.args]
-    GO_VERSION = '1.23.4'
-
-[env]
-  PORT = '8080'
 
 [http_service]
   internal_port = 8080
