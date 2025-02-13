@@ -42,9 +42,13 @@ func main() {
 	handlers.RegisterPostHandlers(router)
 	handlers.RegisterHealthCheckHandlers(router)
 
-	port := fmt.Sprintf("0.0.0.0:%s", os.Getenv("PORT"))
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "3000"
+	}
+	addr := "0.0.0.0:" + port
 	server := &http.Server{
-		Addr:    port,
+		Addr:    addr,
 		Handler: router,
 	}
 
