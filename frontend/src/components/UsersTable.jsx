@@ -1,5 +1,5 @@
 import "../styles/UsersTable.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { getUsers } from "../data/users";
 import {
   Pagination,
@@ -19,19 +19,14 @@ import uuid from "react-uuid";
 import PaginationComponent from "./PaginationComponent";
 
 export default function UsersTable() {
-  const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const openRoute = useNavigate();
 
-  const { data, isLoading, error } = useQuery({
+  const { data: users, isLoading, error } = useQuery({
     queryFn: () => userService.getUsers(currentPage),
     queryKey: ["users", currentPage],
     enabled: !!currentPage,
   });
-
-  useEffect(() => {
-    setUsers(getUsers());
-  }, []);
 
   function changePage(page) {
     setCurrentPage(page);
@@ -54,7 +49,7 @@ export default function UsersTable() {
               ?
                 <div>{error.message}</div>
               :
-              data && data.data && data?.data.map(({ id, name, email, address }) => (
+              users && users.data && Array.isArray(users.data) && users.data.map(({ id, name, email, address }) => (
                 <div key={uuid()} className="detail-row flex items-center border-b cursor-pointer" onClick={() => {
                   openRoute(`${routeNames.posts}/${id}`);
                 }}>
@@ -73,8 +68,8 @@ export default function UsersTable() {
       </main>
       <div className="pagination-container">
       {
-        data && data.totalPages && <PaginationComponent
-          totalPages={data.totalPages}
+        users && users.totalPages && <PaginationComponent
+          totalPages={users.totalPages}
           onPageChange={changePage}
           page={currentPage}
         />
