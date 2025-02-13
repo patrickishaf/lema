@@ -3,7 +3,7 @@
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'lema'
+app = 'lemabackend'
 primary_region = 'jnb'
 
 [build]
@@ -16,7 +16,7 @@ primary_region = 'jnb'
 [http_service]
   internal_port = 8080
   force_https = true
-  auto_stop_machines = 'stop'
+  auto_stop_machines = 'off'
   auto_start_machines = true
   min_machines_running = 0
   processes = ['app']
