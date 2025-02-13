@@ -1,6 +1,10 @@
 package db
 
-import "github.com/patrickishaf/lema-be/models"
+import (
+	"log"
+
+	"github.com/patrickishaf/lema/models"
+)
 
 func FindPostById(id uint) models.Post {
 	var post models.Post
@@ -12,6 +16,22 @@ func FindPostsByUser(userId uint) []models.Post {
 	var posts []models.Post
 	getDB().Where(&models.Post{UserID: userId}).Find(&posts).Order("id DESC")
 	return posts
+}
+
+func FindPostsByUserPaginated(userId uint, limit int, offset int) ([]models.Post, error) {
+	var posts []models.Post
+	err := getDB().Limit(limit).Offset(offset).Order("id desc").Find(&posts).Error
+	if err != nil {
+		log.Printf("failed to find paginated users buy id %d", userId)
+		return nil, err
+	}
+	return posts, nil
+}
+
+func FindPostCountByUser(userId uint) int64 {
+	var count int64
+	getDB().Where(&models.Post{ID: userId}).Find(&[]models.Post{}).Count(&count)
+	return count
 }
 
 func InsertPost(post *models.Post) (models.Post, error) {
@@ -30,45 +50,4 @@ func InsertPost(post *models.Post) (models.Post, error) {
 
 func DeletePost(id uint) {
 	getDB().Delete(&models.Post{}, id)
-}
-
-func insertDummyPosts() error {
-	anchorText := "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dol..."
-	posts := []models.Post{
-		{
-			UserID: 1,
-			Title:  "I got a letter",
-			Body:   anchorText,
-		},
-		{
-			UserID: 1,
-			Title:  "What a nice town",
-			Body:   anchorText,
-		},
-		{
-			UserID: 1,
-			Title:  "I love my wife, Mary",
-			Body:   anchorText,
-		},
-		{
-			UserID: 1,
-			Title:  "How can anyone eat pizza at a time like this?",
-			Body:   anchorText,
-		},
-		{
-			UserID: 2,
-			Title:  "I love my husband, Brad",
-			Body:   anchorText,
-		},
-		{
-			UserID: 2,
-			Title:  "I can definitely eat pizza at a time like this",
-			Body:   anchorText,
-		},
-	}
-	result := getDB().Create(&posts)
-	if result.Error != nil {
-		return result.Error
-	}
-	return nil
 }

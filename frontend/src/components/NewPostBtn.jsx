@@ -1,5 +1,5 @@
 import "@/styles/NewPostBtn.css"
-import useVector from "@/hooks/useVector"
+import addIc from "../assets/add.svg";
 import {
   Dialog,
   DialogClose,
@@ -16,7 +16,6 @@ import postsService from "@/services/posts.service";
 import { useNavigate } from "react-router-dom";
 
 export default function NewPostBtn({ userId }) {
-  const { addIc } = useVector();
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [isOpen, setIsOpen] = useState(false);

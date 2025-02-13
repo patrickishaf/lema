@@ -1,14 +1,14 @@
 import httpClient from "@/utils/httpclient";
 
 const userService = {
-  async getUsers() {
-    const data = await httpClient.get("/users");
-    return data;
+  async getUsers(pageNumber: number = 0) {
+    const res = await httpClient.get(`/users?pageNumber=${pageNumber}`);
+    return res.data;
   },
 
   async getUserById(id: number) {
-    const data = await httpClient.get(`/users/${id}`);
-    return data;
+    const res = await httpClient.get(`/users/${id}`);
+    return res.data;
   }
 }
 

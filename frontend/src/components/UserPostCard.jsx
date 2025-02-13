@@ -1,9 +1,7 @@
 import "@/styles/UserPostCard.css"
-import useVector from "@/hooks/useVector"
+import delBtn from "../assets/delete.svg";
 
 export default function UserPostCard({ post, onDelete }) {
-  const { delBtn } = useVector();
-
   function handleDelete(id) {
     onDelete(id);
     console.log({ id });

@@ -6,24 +6,28 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/patrickishaf/lema-be/common"
-	"github.com/patrickishaf/lema-be/db"
+	"github.com/patrickishaf/lema/common"
+	"github.com/patrickishaf/lema/db"
 )
 
 func getUsers(c *gin.Context) {
-	pageNumber, err := strconv.Atoi(c.DefaultQuery("pageNumber", "0"))
+	pageNumber, err := strconv.Atoi(c.DefaultQuery("pageNumber", "1"))
 	if err != nil {
 		common.SendResponse(c, http.StatusBadRequest, "invalid page number", "failed to get users")
 		return
 	}
-	pageSize, err := strconv.Atoi(c.DefaultQuery("pageSize", "10"))
+	pageSize, err := strconv.Atoi(c.DefaultQuery("pageSize", "6"))
 	if err != nil {
 		common.SendResponse(c, http.StatusBadRequest, "invalid page size", "failed to get users")
 		return
 	}
 
-	offset := pageNumber * pageSize
-	users := db.FindUsers(pageSize, offset)
+	offset := (pageNumber - 1) * pageSize
+	users, err := db.FindUsers(pageSize, offset)
+	if err != nil {
+		common.SendResponse(c, http.StatusInternalServerError, err, "failed to get users")
+		return
+	}
 	count := db.FindUserCount()
 	totalPages := math.Ceil(float64(count) / float64(pageSize))
 
@@ -32,6 +36,9 @@ func getUsers(c *gin.Context) {
 		"pageSize":   pageSize,
 		"totalPages": totalPages,
 		"data":       users,
+	}
+	if pageNumber > int(totalPages) {
+		data["pageNumber"] = totalPages
 	}
 	common.SendResponse(c, http.StatusOK, data, "users fetched sucessfully")
 }
@@ -49,7 +56,6 @@ func getUserById(c *gin.Context) {
 	}
 
 	existingUser := db.FindUserById(uint(userID))
-	c.IndentedJSON(http.StatusOK, existingUser)
 	common.SendResponse(c, http.StatusOK, existingUser, "user fetched successfully")
 }
 
