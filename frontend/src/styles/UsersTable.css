@@ -74,11 +74,19 @@
   color: #535862;
 }
 
-.cell.detail .detail-txt {
+.cell.detail .detail-txt:not(.cell.detail.two .detail-txt) {
   display: -webkit-box;
   -webkit-line-clamp: 1;
   line-clamp: 1;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.cell.detail.two .detail-txt {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  word-break: break-all;
 }

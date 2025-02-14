@@ -65,7 +65,7 @@ export default function UsersTable() {
                       <p className="detail-txt user-name font-medium text-sm">{name}</p>
                     </div>
                     <div className="cell detail two">
-                      <p className="detail-txt user-email text-sm">{email}</p>
+                      <p className="detail-txt user-email text-sm whitespace-nowrap overflow-hidden overflow-ellipsis max-w-full">{email}</p>
                     </div>
                     <div className="cell detail three">
                       <p className="detail-txt user-address text-sm">{address}</p>
