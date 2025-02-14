@@ -41,7 +41,7 @@ func main() {
 
 	handlers.NewPostsHandler(db.NewPostsRepository()).RegisterRequestHandlers(router)
 	handlers.NewUsersHandler(db.NewUserRespository()).RegisterRequestHandlers(router)
-	handlers.NewHealthCheckHandler().RegisterRequestHandlers(router)
+	handlers.NewHealthCheckHandler(db.NewHealthCheckRepository()).RegisterRequestHandlers(router)
 
 	port := os.Getenv("PORT")
 	if port == "" {
