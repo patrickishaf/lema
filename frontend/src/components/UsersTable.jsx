@@ -36,7 +36,7 @@ export default function UsersTable() {
   useEffect(() => {
     if (!users || !users.data || users.data.length === 0) return;
 
-    setUserList(users.data)
+    setUserList(users.data);
   }, [users]);
 
   return (
