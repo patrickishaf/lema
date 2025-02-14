@@ -28,6 +28,8 @@ func InitializeDb() {
 	if dbError != nil {
 		log.Println("failed to migrate database", dbError)
 	}
+
+	seedDatabase()
 }
 
 func getDB() *gorm.DB {
