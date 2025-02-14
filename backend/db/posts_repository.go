@@ -20,7 +20,12 @@ func NewPostsRepository() *PostsRepository {
 }
 
 func (r *PostsRepository) FindPostById(id uint) (*models.Post, error) {
-	return &models.Post{}, nil
+	var post models.Post
+	if err := r.db.Where(&models.Post{ID: id}).First(&post).Error; err != nil {
+		log.Printf("error in PostsRepository.FindPostByID: %v", err)
+		return nil, err
+	}
+	return &post, nil
 }
 
 func (r *PostsRepository) FindPostsByUserID(userID uint, pageNumber int, limit int) (*common.PaginatedItems[models.Post], error) {
@@ -72,9 +77,25 @@ func (r *PostsRepository) findPostCountByUser(userID uint) (int64, error) {
 }
 
 func (r *PostsRepository) InsertPost(post *models.Post) (*models.Post, error) {
-	return &models.Post{}, nil
+	result := r.db.Create(&post)
+	if result.Error != nil {
+		log.Printf("error in PostsRepository.InsertPost: %v", result.Error)
+		return &models.Post{}, result.Error
+	}
+
+	return &models.Post{
+		ID:     post.ID,
+		UserID: post.UserID,
+		Title:  post.Title,
+		Body:   post.Body,
+	}, nil
 }
 
 func (r *PostsRepository) DeletePost(postID uint) error {
+	err := r.db.Delete(&models.Post{}, postID).Error
+	if err != nil {
+		log.Printf("error in PostsRepository.DeletePost: %v", err)
+		return err
+	}
 	return nil
 }

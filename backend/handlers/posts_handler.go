@@ -63,7 +63,7 @@ func (h *PostsHandler) createPost(c *gin.Context) {
 		return
 	}
 
-	newPost, err := db.InsertPost(&models.Post{
+	newPost, err := h.repo.InsertPost(&models.Post{
 		UserID: reqBody.UserID,
 		Title:  reqBody.Title,
 		Body:   reqBody.Body,
@@ -83,8 +83,8 @@ func (h *PostsHandler) deletePost(c *gin.Context) {
 		return
 	}
 
-	existingPost := db.FindPostById(uint(postId))
-	if existingPost.ID == 0 {
+	existingPost, err := h.repo.FindPostById(uint(postId))
+	if err != nil {
 		errMsg := fmt.Sprintf("post with id %d not found", postId)
 		common.SendResponse(c, http.StatusNotFound, []string{}, errMsg)
 		return
