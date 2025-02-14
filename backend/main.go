@@ -35,7 +35,7 @@ func main() {
 		AllowCredentials: true,
 		MaxAge:           12 * 60 * 60,
 	}))
-	router.Use(common.RateLimiter())
+	router.Use(common.PlaceRateLimits())
 
 	logger := common.InitializeLogger()
 	router.Use(common.LogRequests(logger))
