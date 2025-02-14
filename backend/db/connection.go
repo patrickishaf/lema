@@ -68,3 +68,7 @@ func CloseDB() {
 	}
 	sqlDB.Close()
 }
+
+func GetTestDB() *gorm.DB {
+	return db
+}
