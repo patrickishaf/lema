@@ -43,9 +43,9 @@ export default function UsersTable() {
     <section className="users-table w-full flex flex-col items-end">
       <main className="table-main w-full rounded-lg border border-solid mb-6">
         <div className="w-full flex items-center">
-          <div className="header-cell one text-xs">Full Name</div>
-          <div className="header-cell two text-xs">Email Address</div>
-          <div className="header-cell three text-xs">Address</div>
+          <div className="cell header one text-xs">Full Name</div>
+          <div className="cell header two text-xs">Email Address</div>
+          <div className="cell header three text-xs">Address</div>
         </div>
         {
           isLoading
@@ -60,13 +60,13 @@ export default function UsersTable() {
                 <div key={uuid()} className="detail-row flex items-center border-b cursor-pointer" onClick={() => {
                   openRoute(`${routeNames.posts}/${id}`);
                 }}>
-                  <div className="detail-cell one">
+                  <div className="cell detail one">
                     <p className="detail-txt user-name font-medium text-sm">{name}</p>
                   </div>
-                  <div className="detail-cell two">
+                  <div className="cell detail two">
                     <p className="detail-txt user-email text-sm">{email}</p>
                   </div>
-                  <div className="detail-cell three">
+                  <div className="cell detail three">
                     <p className="detail-txt user-address text-sm">{address}</p>
                   </div>
                 </div>
