@@ -25,6 +25,6 @@ func (h *HealthCheckHandler) healthCheck(c *gin.Context) {
 	}
 }
 
-func (h *HealthCheckHandler) RegisterRequestHandlers(router *gin.Engine) {
+func (h *HealthCheckHandler) RegisterRequestHandlers(router *gin.RouterGroup) {
 	router.GET("/health", h.healthCheck)
 }

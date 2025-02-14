@@ -109,7 +109,7 @@ func (h *PostsHandler) deletePost(c *gin.Context) {
 	common.SendResponse(c, http.StatusOK, existingPost, successMsg)
 }
 
-func (h *PostsHandler) RegisterRequestHandlers(router *gin.Engine) {
+func (h *PostsHandler) RegisterRequestHandlers(router *gin.RouterGroup) {
 	router.GET("/posts", h.getPostsByUserId)
 	router.POST("/posts", h.createPost)
 	router.DELETE("/posts/:id", h.deletePost)

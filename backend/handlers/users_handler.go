@@ -86,7 +86,7 @@ func (h *UsersHandler) getUserById(c *gin.Context) {
 	common.SendResponse(c, http.StatusOK, existingUser, "user fetched successfully")
 }
 
-func (h *UsersHandler) RegisterRequestHandlers(router *gin.Engine) {
+func (h *UsersHandler) RegisterRequestHandlers(router *gin.RouterGroup) {
 	router.GET("/users", h.getUsers)
 	router.GET("/users/count", h.getUserCount)
 	router.GET("/users/:id", h.getUserById)

@@ -40,9 +40,11 @@ func main() {
 	logger := common.InitializeLogger()
 	router.Use(common.LogRequests(logger))
 
-	handlers.NewPostsHandler(db.NewPostsRepository()).RegisterRequestHandlers(router)
-	handlers.NewUsersHandler(db.NewUserRespository()).RegisterRequestHandlers(router)
-	handlers.NewHealthCheckHandler(db.NewHealthCheckRepository()).RegisterRequestHandlers(router)
+	routerV1 := router.Group("/v1")
+
+	handlers.NewPostsHandler(db.NewPostsRepository()).RegisterRequestHandlers(routerV1)
+	handlers.NewUsersHandler(db.NewUserRespository()).RegisterRequestHandlers(routerV1)
+	handlers.NewHealthCheckHandler(db.NewHealthCheckRepository()).RegisterRequestHandlers(routerV1)
 
 	port := os.Getenv("PORT")
 	if port == "" {
