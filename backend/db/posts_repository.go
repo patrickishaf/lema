@@ -4,6 +4,7 @@ import (
 	"log"
 	"math"
 
+	"github.com/patrickishaf/lema/common"
 	"github.com/patrickishaf/lema/models"
 	"gorm.io/gorm"
 )
@@ -22,17 +23,22 @@ func (r *PostsRepository) FindPostById(id uint) (*models.Post, error) {
 	return &models.Post{}, nil
 }
 
-func (r *PostsRepository) FindPostsByUserID(userID uint, pageNumber int, limit int) (*[]models.Post, error) {
+func (r *PostsRepository) FindPostsByUserID(userID uint, pageNumber int, limit int) (*common.PaginatedItems[models.Post], error) {
 	var posts []models.Post
 
 	totalPostsByUser, err := r.findPostCountByUser(userID)
 	if err != nil {
-		return &posts, err
+		return nil, err
 	}
 
 	if totalPostsByUser == 0 {
 		log.Println("user has no posts")
-		return &posts, nil
+		return &common.PaginatedItems[models.Post]{
+			Data:       posts,
+			PageNumber: 0,
+			PageSize:   limit,
+			TotalPages: 0,
+		}, nil
 	}
 
 	// get the elements at the final page if the pageNumber is out of bounds
@@ -48,7 +54,12 @@ func (r *PostsRepository) FindPostsByUserID(userID uint, pageNumber int, limit i
 		return nil, err
 	}
 
-	return &posts, nil
+	return &common.PaginatedItems[models.Post]{
+		Data:       posts,
+		PageNumber: pageNumber,
+		PageSize:   limit,
+		TotalPages: int(totalPages),
+	}, nil
 }
 
 func (r *PostsRepository) findPostCountByUser(userID uint) (int64, error) {

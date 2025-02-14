@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"fmt"
-	"math"
 	"net/http"
 	"strconv"
 
@@ -41,24 +40,12 @@ func (h *PostsHandler) getPostsByUserId(c *gin.Context) {
 		return
 	}
 
-	posts, err := h.repo.FindPostsByUserID(uint(userId), pageNumber, pageSize)
+	postsPaginated, err := h.repo.FindPostsByUserID(uint(userId), pageNumber, pageSize)
 	if err != nil {
 		common.SendResponse(c, http.StatusInternalServerError, err, "failed to get posts by user")
 		return
 	}
-	count := db.FindPostCountByUser(uint(userId))
-	totalPages := math.Ceil(float64(count) / float64(pageSize))
-
-	data := map[string]any{
-		"pageNumber": pageNumber,
-		"pageSize":   pageSize,
-		"totalPages": totalPages,
-		"data":       posts,
-	}
-	if pageNumber > int(totalPages) {
-		data["pageNumber"] = totalPages
-	}
-	common.SendResponse(c, http.StatusOK, data, "posts fetched successfully")
+	common.SendResponse(c, http.StatusOK, postsPaginated, "posts fetched successfully")
 }
 
 func (h *PostsHandler) createPost(c *gin.Context) {

@@ -31,3 +31,10 @@ func SendResponse(c *gin.Context, statusCode int, data any, message string) {
 	}
 	c.IndentedJSON(statusCode, response)
 }
+
+type PaginatedItems[T any] struct {
+	PageNumber int `json:"pageNumber"`
+	PageSize   int `json:"pageSize"`
+	TotalPages int `json:"totalPages"`
+	Data       []T `json:"data"`
+}
