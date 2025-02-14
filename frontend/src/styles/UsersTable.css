@@ -1,14 +1,28 @@
 :root {
   --mobile-cell-1: 40%;
   --mobile-cell-2: 60%;
+  --mobile-cell-3: 70%;
   --cell-width-1: 23.3%;
   --cell-width-2: 30.8%;
   --cell-width-3: calc(100% - 23.3% - 30.8%);
 }
 
+@media screen and (max-width: 640px) {
+  .table-box {
+    overflow-x: scroll;
+    width: 100%;
+  }
+}
+
 .table-main {
   border-color: #E9EAEB;
   border-width: 1px;
+}
+
+@media screen and (max-width: 640px) {
+  .table-main {
+    min-width: max-content;
+  }
 }
 
 .cell.one {
@@ -29,20 +43,20 @@
 }
 
 @media only screen and (max-width: 640px) {
-  .table-main .cell.header.one {
-    width: var(--mobile-cell-1)
+  .table-main .cell.one {
+    width: var(--mobile-cell-1);
   }
 }
 
 @media only screen and (max-width: 640px) {
-  .table-main .cell.header.two {
-    width: var(--mobile-cell-1)
+  .table-main .cell.two {
+    width: var(--mobile-cell-2);
   }
 }
 
 @media only screen and (max-width: 640px) {
-  .table-main .cell.header.three {
-    display: none;
+  .table-main .cell.three {
+    display: var(--mobile-cell-3);
   }
 }
 
@@ -58,24 +72,6 @@
   height: 72px;
   padding: 26px 24px;
   color: #535862;
-}
-
-@media only screen and (max-width: 640px) {
-  .table-main .cell.detail.one {
-    width: var(--mobile-cell-1)
-  }
-}
-
-@media only screen and (max-width: 640px) {
-  .table-main .cell.detail.two {
-    width: var(--mobile-cell-2);
-  }
-}
-
-@media only screen and (max-width: 640px) {
-  .table-main .cell.detail.three {
-    display: none;
-  }
 }
 
 .cell.detail .detail-txt {
