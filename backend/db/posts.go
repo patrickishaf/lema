@@ -30,7 +30,7 @@ func FindPostsByUserPaginated(userId uint, limit int, offset int) ([]models.Post
 
 func FindPostCountByUser(userId uint) int64 {
 	var count int64
-	getDB().Where(&models.Post{ID: userId}).Find(&[]models.Post{}).Count(&count)
+	getDB().Model(&models.Post{}).Where(&models.Post{UserID: userId}).Count(&count)
 	return count
 }
 

@@ -41,8 +41,7 @@ func (h *PostsHandler) getPostsByUserId(c *gin.Context) {
 		return
 	}
 
-	offset := (pageNumber - 1) * pageSize
-	posts, err := db.FindPostsByUserPaginated(uint(userId), pageSize, offset)
+	posts, err := h.repo.FindPostsByUserID(uint(userId), pageNumber, pageSize)
 	if err != nil {
 		common.SendResponse(c, http.StatusInternalServerError, err, "failed to get posts by user")
 		return

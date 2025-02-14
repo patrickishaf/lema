@@ -2,6 +2,7 @@ package db
 
 import (
 	"log"
+	"math"
 
 	"github.com/patrickishaf/lema/models"
 	"gorm.io/gorm"
@@ -21,18 +22,42 @@ func (r *PostsRepository) FindPostById(id uint) (*models.Post, error) {
 	return &models.Post{}, nil
 }
 
-func (r *PostsRepository) FindPostsByUserID(userID uint, limit int, offset int) (*[]models.Post, error) {
+func (r *PostsRepository) FindPostsByUserID(userID uint, pageNumber int, limit int) (*[]models.Post, error) {
 	var posts []models.Post
-	err := r.db.Limit(limit).Offset(offset).Order("id desc").Find(&posts).Error
+
+	totalPostsByUser, err := r.findPostCountByUser(userID)
+	if err != nil {
+		return &posts, err
+	}
+
+	if totalPostsByUser == 0 {
+		log.Println("user has no posts")
+		return &posts, nil
+	}
+
+	// get the elements at the final page if the pageNumber is out of bounds
+	totalPages := math.Ceil(float64(totalPostsByUser) / float64(limit))
+	if pageNumber > int(totalPages) {
+		pageNumber = int(totalPages)
+	}
+
+	offset := (pageNumber - 1) * limit
+	err = r.db.Limit(limit).Offset(offset).Order("id desc").Where("user_id = ?", userID).Find(&posts).Error
 	if err != nil {
 		log.Printf("error in PostsRepository.FindPostsByUserID: %v", err)
 		return nil, err
 	}
+
 	return &posts, nil
 }
 
-func (r *PostsRepository) findPostCountByUser(userID uint) int64 {
-	return 0
+func (r *PostsRepository) findPostCountByUser(userID uint) (int64, error) {
+	var count int64
+	if err := r.db.Model(&models.Post{}).Where(&models.Post{UserID: userID}).Count(&count).Error; err != nil {
+		log.Printf("failed to get post count by user id %v", err)
+		return 0, err
+	}
+	return count, nil
 }
 
 func (r *PostsRepository) InsertPost(post *models.Post) (*models.Post, error) {
