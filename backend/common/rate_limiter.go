@@ -20,7 +20,7 @@ func PlaceRateLimits() gin.HandlerFunc {
 		mu.Lock()
 		limiter, exists := limiters[ip]
 		if !exists {
-			limiter = rate.NewLimiter(1, 5)
+			limiter = rate.NewLimiter(20, 20)
 			limiters[ip] = limiter
 		}
 		mu.Unlock()
