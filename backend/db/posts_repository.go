@@ -39,7 +39,7 @@ func (r *PostsRepository) FindPostsByUserID(userID uint, pageNumber int, limit i
 	if totalPostsByUser == 0 {
 		log.Println("user has no posts")
 		return &common.PaginatedItems[models.Post]{
-			Data:       posts,
+			Data:       []models.Post{},
 			PageNumber: 0,
 			PageSize:   limit,
 			TotalPages: 0,
