@@ -17,6 +17,7 @@ import userService from "@/services/user.service";
 import Loader from "./Loader";
 import uuid from "react-uuid";
 import PaginationComponent from "./PaginationComponent";
+import ErrorFallback from "./ErrorFallback";
 
 export default function UsersTable() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -48,7 +49,7 @@ export default function UsersTable() {
               : 
                 error
                 ?
-                  <div>{error.message}</div>
+                  <ErrorFallback errorName="failed to fetch users" info={error.message} />
                 :
                 users && users.data && users.data.map(({ id, name, email, address }) => (
                   <div key={uuid()} className="detail-row flex items-center border-b cursor-pointer" onClick={() => {
