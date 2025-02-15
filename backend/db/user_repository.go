@@ -42,7 +42,7 @@ func (r *UserRepository) GetUserCount() (int64, error) {
 	return count, nil
 }
 
-func (r *UserRepository) FindUserById(id uint) (*models.User, error) {
+func (r *UserRepository) FindUserById(id string) (*models.User, error) {
 	var user models.User
 	if err := r.db.Where(&models.User{ID: id}).First(&user).Error; err != nil {
 		log.Printf("error in UserRepository.FindUserById: %v", err)

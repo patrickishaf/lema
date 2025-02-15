@@ -6,7 +6,6 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/patrickishaf/lema/models"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
@@ -22,14 +21,14 @@ func InitializeDb() {
 
 	configureConnectionPooling(database)
 
-	db = database
-	dbError := db.AutoMigrate(&models.Post{}, &models.User{})
+	// db = database
+	// dbError := db.AutoMigrate(&models.Post{}, &models.User{})
 
-	if dbError != nil {
-		log.Println("failed to migrate database", dbError)
-	}
+	// if dbError != nil {
+	// 	log.Println("failed to migrate database", dbError)
+	// }
 
-	seedDatabase()
+	// seedDatabase()
 }
 
 func getDB() *gorm.DB {

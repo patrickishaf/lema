@@ -70,14 +70,14 @@ func (h *UsersHandler) getUserCount(c *gin.Context) {
 }
 
 func (h *UsersHandler) getUserById(c *gin.Context) {
-	userID, err := strconv.Atoi(c.Param("id"))
-	if err != nil {
-		fmt.Printf("failed to get user by ID. error: %v", err)
-		common.SendResponse(c, http.StatusBadRequest, "invalid id param", "failed to get user")
-		return
-	}
+	userID := c.Param("id")
+	// if err != nil {
+	// 	fmt.Printf("failed to get user by ID. error: %v", err)
+	// 	common.SendResponse(c, http.StatusBadRequest, "invalid id param", "failed to get user")
+	// 	return
+	// }
 
-	existingUser, err := h.repo.FindUserById(uint(userID))
+	existingUser, err := h.repo.FindUserById(userID)
 	if err != nil {
 		fmt.Printf("failed to get user by ID. error: %v", err)
 		common.SendResponse(c, http.StatusInternalServerError, err, "failed to get user by ID")

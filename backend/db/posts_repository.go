@@ -19,7 +19,7 @@ func NewPostsRepository() *PostsRepository {
 	}
 }
 
-func (r *PostsRepository) FindPostById(id uint) (*models.Post, error) {
+func (r *PostsRepository) FindPostById(id string) (*models.Post, error) {
 	var post models.Post
 	if err := r.db.Where(&models.Post{ID: id}).First(&post).Error; err != nil {
 		log.Printf("error in PostsRepository.FindPostByID: %v", err)
@@ -28,7 +28,7 @@ func (r *PostsRepository) FindPostById(id uint) (*models.Post, error) {
 	return &post, nil
 }
 
-func (r *PostsRepository) FindPostsByUserID(userID uint, pageNumber int, limit int) (*common.PaginatedItems[models.Post], error) {
+func (r *PostsRepository) FindPostsByUserID(userID string, pageNumber int, limit int) (*common.PaginatedItems[models.Post], error) {
 	var posts []models.Post
 
 	totalPostsByUser, err := r.findPostCountByUser(userID)
@@ -68,7 +68,7 @@ func (r *PostsRepository) FindPostsByUserID(userID uint, pageNumber int, limit i
 	}, nil
 }
 
-func (r *PostsRepository) findPostCountByUser(userID uint) (int64, error) {
+func (r *PostsRepository) findPostCountByUser(userID string) (int64, error) {
 	var count int64
 	if err := r.db.Model(&models.Post{}).Where(&models.Post{UserID: userID}).Count(&count).Error; err != nil {
 		log.Printf("failed to get post count by user id %v", err)
@@ -92,7 +92,7 @@ func (r *PostsRepository) InsertPost(post *models.Post) (*models.Post, error) {
 	}, nil
 }
 
-func (r *PostsRepository) DeletePost(postID uint) error {
+func (r *PostsRepository) DeletePost(postID string) error {
 	err := r.db.Delete(&models.Post{}, postID).Error
 	if err != nil {
 		log.Printf("error in PostsRepository.DeletePost: %v", err)
