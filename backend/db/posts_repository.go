@@ -105,7 +105,8 @@ func (r *PostsRepository) InsertPost(title string, body string, userId string) (
 }
 
 func (r *PostsRepository) DeletePost(postID string) error {
-	err := r.db.Delete(&models.Post{}, postID).Error
+	var post models.Post
+	err := r.db.Where("id = ?", postID).Delete(&post).Error
 	if err != nil {
 		log.Printf("error in PostsRepository.DeletePost: %v", err)
 		return err
