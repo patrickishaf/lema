@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"testing"
 
+	"github.com/patrickishaf/lema/common"
 	"github.com/patrickishaf/lema/db"
 	"github.com/patrickishaf/lema/models"
 	"github.com/stretchr/testify/assert"
@@ -29,8 +30,9 @@ func TestGetPostsByUserId(t *testing.T) {
 }
 
 func TestCreatePost(t *testing.T) {
+	id, _ := common.GenerateID()
 	postData := models.Post{
-		UserID: 1,
+		UserID: id,
 		Title:  "A sample post title",
 		Body:   "This is the body of a test post 1",
 	}
@@ -39,13 +41,14 @@ func TestCreatePost(t *testing.T) {
 }
 
 func TestDeletePost(t *testing.T) {
+	id, _ := common.GenerateID()
 	postData := models.Post{
-		UserID: 1,
+		UserID: id,
 		Title:  "A sample post title",
 		Body:   "This is the body of a test post 1",
 	}
 	makeRequest("POST", "/v1/posts", postData)
 
-	writer := makeRequest("DELETE", "/v1/posts/1", "")
+	writer := makeRequest("DELETE", "/v1/posts/"+id, "")
 	assert.Equal(t, http.StatusOK, writer.Code)
 }

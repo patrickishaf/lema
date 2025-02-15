@@ -38,6 +38,6 @@ func TestValidateStruct(t *testing.T) {
 	}
 	errs4 := ValidateStruct(input4)
 	if errs4 != nil {
-		t.Errorf("failed to validat valid struct")
+		t.Errorf("failed to validate valid struct")
 	}
 }

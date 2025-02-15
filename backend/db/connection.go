@@ -21,7 +21,7 @@ func InitializeDb() {
 
 	configureConnectionPooling(database)
 
-	// db = database
+	db = database
 	// dbError := db.AutoMigrate(&models.Post{}, &models.User{})
 
 	// if dbError != nil {

@@ -21,3 +21,13 @@ func TestCreateErrorResponse(t *testing.T) {
 		t.Errorf("incorrect conversion. invalid value in `message` key")
 	}
 }
+
+func TestGenerateID(t *testing.T) {
+	id, err := GenerateID()
+	if err != nil {
+		t.Errorf("failed to generate id. error: %v", err)
+	}
+	if len(id) != 32 {
+		t.Errorf("generated id does not have a length of 32")
+	}
+}

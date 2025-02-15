@@ -45,7 +45,7 @@ func (h *PostsHandler) getPostsByUserId(c *gin.Context) {
 
 	postsPaginated, err := h.repo.FindPostsByUserID(userId, pageNumber, pageSize)
 	if err != nil {
-		log.Printf("failed to get posts with user id %d. error: %v", userId, err)
+		log.Printf("failed to get posts with user id %s. error: %v", userId, err)
 		common.SendResponse(c, http.StatusInternalServerError, err, "failed to get posts by user")
 		return
 	}
@@ -69,7 +69,14 @@ func (h *PostsHandler) createPost(c *gin.Context) {
 		return
 	}
 
+	postID, err := common.GenerateID()
+	if err != nil {
+		errMsg := fmt.Sprintf("failed to generate ID for new post. error: %v", err)
+		common.SendResponse(c, http.StatusBadRequest, errMsg, "failed to create post")
+		return
+	}
 	newPost, err := h.repo.InsertPost(&models.Post{
+		ID:     postID,
 		UserID: reqBody.UserID,
 		Title:  reqBody.Title,
 		Body:   reqBody.Body,
@@ -94,18 +101,18 @@ func (h *PostsHandler) deletePost(c *gin.Context) {
 
 	existingPost, err := h.repo.FindPostById(postId)
 	if err != nil {
-		errMsg := fmt.Sprintf("post with id %d not found", postId)
+		errMsg := fmt.Sprintf("post with id %s not found", postId)
 		common.SendResponse(c, http.StatusNotFound, []string{}, errMsg)
 		return
 	}
 
 	err = h.repo.DeletePost(postId)
 	if err != nil {
-		log.Printf("failed to delete post with id %d", postId)
+		log.Printf("failed to delete post with id %s", postId)
 		common.SendResponse(c, http.StatusInternalServerError, err, "failed to delete post")
 		return
 	}
-	successMsg := fmt.Sprintf("post with id %d deleted successfully", postId)
+	successMsg := fmt.Sprintf("post with id %s deleted successfully", postId)
 	common.SendResponse(c, http.StatusOK, existingPost, successMsg)
 }
 

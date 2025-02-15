@@ -22,7 +22,7 @@ func (r *UserRepository) FindAll(pageNumber int, pageSize int) (*[]models.User, 
 	var count int64
 
 	offset := (pageNumber - 1) * pageSize
-	err := r.db.Limit(pageSize).Offset(offset).Order("id asc, email").Find(&users).Error
+	err := r.db.Limit(pageSize).Offset(offset).Order("id asc, email").Preload("Address").Find(&users).Error
 	if err != nil {
 		log.Printf("error in UserRepository.FindAll: %v", err)
 		return nil, err
@@ -44,7 +44,7 @@ func (r *UserRepository) GetUserCount() (int64, error) {
 
 func (r *UserRepository) FindUserById(id string) (*models.User, error) {
 	var user models.User
-	if err := r.db.Where(&models.User{ID: id}).First(&user).Error; err != nil {
+	if err := r.db.Where(&models.User{ID: id}).Preload("Address").First(&user).Error; err != nil {
 		log.Printf("error in UserRepository.FindUserById: %v", err)
 		return &models.User{}, err
 	}
