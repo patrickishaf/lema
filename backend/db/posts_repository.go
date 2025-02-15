@@ -3,6 +3,7 @@ package db
 import (
 	"log"
 	"math"
+	"time"
 
 	"github.com/patrickishaf/lema/common"
 	"github.com/patrickishaf/lema/models"
@@ -77,7 +78,17 @@ func (r *PostsRepository) findPostCountByUser(userID string) (int64, error) {
 	return count, nil
 }
 
-func (r *PostsRepository) InsertPost(post *models.Post) (*models.Post, error) {
+func (r *PostsRepository) InsertPost(title string, body string, userId string) (*models.Post, error) {
+	id, _ := common.GenerateID()
+	now := time.Now()
+	createdAt := now.Format(time.RFC3339)
+	post := models.Post{
+		ID:        id,
+		UserID:    userId,
+		Title:     title,
+		Body:      body,
+		CreatedAt: createdAt,
+	}
 	result := r.db.Create(&post)
 	if result.Error != nil {
 		log.Printf("error in PostsRepository.InsertPost: %v", result.Error)
@@ -85,10 +96,11 @@ func (r *PostsRepository) InsertPost(post *models.Post) (*models.Post, error) {
 	}
 
 	return &models.Post{
-		ID:     post.ID,
-		UserID: post.UserID,
-		Title:  post.Title,
-		Body:   post.Body,
+		ID:        post.ID,
+		UserID:    post.UserID,
+		Title:     post.Title,
+		Body:      post.Body,
+		CreatedAt: post.CreatedAt,
 	}, nil
 }
 

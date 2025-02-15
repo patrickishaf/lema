@@ -10,7 +10,6 @@ import (
 	"github.com/patrickishaf/lema/common"
 	"github.com/patrickishaf/lema/db"
 	dtos "github.com/patrickishaf/lema/dto"
-	"github.com/patrickishaf/lema/models"
 )
 
 type PostsHandler struct {
@@ -69,18 +68,7 @@ func (h *PostsHandler) createPost(c *gin.Context) {
 		return
 	}
 
-	postID, err := common.GenerateID()
-	if err != nil {
-		errMsg := fmt.Sprintf("failed to generate ID for new post. error: %v", err)
-		common.SendResponse(c, http.StatusBadRequest, errMsg, "failed to create post")
-		return
-	}
-	newPost, err := h.repo.InsertPost(&models.Post{
-		ID:     postID,
-		UserID: reqBody.UserID,
-		Title:  reqBody.Title,
-		Body:   reqBody.Body,
-	})
+	newPost, err := h.repo.InsertPost(reqBody.Title, reqBody.Body, reqBody.UserID)
 	if err != nil {
 		log.Printf("failed to create post. error: %v", err)
 		common.SendResponse(c, http.StatusInternalServerError, err, "failed to create post")
@@ -91,12 +79,7 @@ func (h *PostsHandler) createPost(c *gin.Context) {
 }
 
 func (h *PostsHandler) deletePost(c *gin.Context) {
-	// postId, err := strconv.Atoi(c.Param("id"))
-	// if err != nil {
-	// 	log.Printf("failed to delete post. error: %v", err)
-	// 	common.SendResponse(c, http.StatusBadRequest, []string{}, "invalid post id")
-	// 	return
-	// }
+	// TODO: Add field validation here
 	postId := c.Param("id")
 
 	existingPost, err := h.repo.FindPostById(postId)
