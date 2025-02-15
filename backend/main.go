@@ -18,6 +18,8 @@ import (
 )
 
 func main() {
+	common.GetCurrentDir()
+	common.ListDirectoryContents()
 	seedErr := db.SeedDatabase()
 	if seedErr != nil {
 		log.Printf("failed to seed database. error: %v", seedErr)

@@ -2,7 +2,9 @@ package common
 
 import (
 	"crypto/rand"
+	"log"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 )
@@ -57,4 +59,39 @@ func GenerateID() (string, error) {
 	}
 
 	return string(result), nil
+}
+
+func GetCurrentDir() {
+	dir, err := os.Getwd()
+	if err != nil {
+		log.Println("Error getting current working directory:", err)
+		return
+	}
+
+	log.Println("Current working directory:", dir)
+}
+
+func ListDirectoryContents() {
+	dir, err := os.Getwd()
+	if err != nil {
+		log.Println("Error getting current working directory:", err)
+		return
+	}
+
+	// List the contents of the directory
+	entries, err := os.ReadDir(dir)
+	if err != nil {
+		log.Println("Error reading directory:", err)
+		return
+	}
+
+	log.Println("Contents of the current working directory:", dir)
+	for _, entry := range entries {
+		info, err := entry.Info()
+		if err != nil {
+			log.Println("Error getting file info:", err)
+			continue
+		}
+		log.Printf("Name: %s, IsDir: %v, Size: %d bytes\n", entry.Name(), entry.IsDir(), info.Size())
+	}
 }
