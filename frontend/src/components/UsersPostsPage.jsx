@@ -23,8 +23,8 @@ export default function UsersPostsPage() {
     enabled: !!userId,
   })
   const {data: postsData, isLoading: isPostsLoading, isError: isPostsError, error: postsError, refetch: postsRefetch } = useQuery({
-    queryFn: () => postsService.getPostsByUserId(userId, currentPage),
-    queryKey: ["userposts", userId, currentPage],
+    queryFn: () => postsService.getPostsByUserId(userId),
+    queryKey: ["userposts", userId],
     enabled: !!userId,
   })
   const {mutateAsync: deletePost} = useMutation({
