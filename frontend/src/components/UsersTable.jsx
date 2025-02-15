@@ -19,9 +19,10 @@ import uuid from "react-uuid";
 import PaginationComponent from "./PaginationComponent";
 import ErrorFallback from "./ErrorFallback";
 import { parseAddress } from "@/utils/helpers";
+import { pageStore } from "@/utils/pagestore";
 
 export default function UsersTable() {
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(undefined);
   const openRoute = useNavigate();
 
   const { data: users, isLoading, error } = useQuery({
@@ -32,7 +33,12 @@ export default function UsersTable() {
 
   function changePage(page) {
     setCurrentPage(page);
+    pageStore.saveUserPage(page);
   }
+
+  useEffect(() => {
+    setCurrentPage(pageStore.getUserPage());
+  }, []);
 
   return (
     <section className="users-table w-full flex flex-col items-end">
