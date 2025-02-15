@@ -64,6 +64,7 @@ func (r *PostsRepository) FindPostsByUserID(userID uint, pageNumber int, limit i
 		PageNumber: pageNumber,
 		PageSize:   limit,
 		TotalPages: int(totalPages),
+		TotalItems: int(totalPostsByUser),
 	}, nil
 }
 

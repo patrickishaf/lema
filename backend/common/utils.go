@@ -36,5 +36,6 @@ type PaginatedItems[T any] struct {
 	PageNumber int `json:"pageNumber"`
 	PageSize   int `json:"pageSize"`
 	TotalPages int `json:"totalPages"`
+	TotalItems int `json:"totalItems"`
 	Data       []T `json:"data"`
 }

@@ -57,7 +57,7 @@ export default function UsersPostsPage() {
               <h1 className="page-title text-6xl font-medium my-4">{userData?.name}</h1>
               <p className="email text-sm custom-pale-txt mb-6">{userData?.email}
                 {
-                  !isPostsLoading && !isPostsError && postsData && <span className="font-medium">{` • ${postsData.data.length} posts`}</span>
+                  !isPostsLoading && !isPostsError && postsData && <span className="font-medium">{` • ${postsData.totalItems} posts`}</span>
                 }
               </p>
               </>
