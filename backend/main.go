@@ -18,9 +18,6 @@ import (
 )
 
 func main() {
-	curDir := common.GetCurrentDir()
-	common.ListDirectoryContents()
-	common.PrintTree(curDir, "")
 	seedErr := db.SeedDatabase()
 	if seedErr != nil {
 		log.Printf("failed to seed database. error: %v", seedErr)
