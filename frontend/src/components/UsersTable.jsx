@@ -71,11 +71,13 @@ export default function UsersTable() {
       </div>
       <div className="pagination-container">
       {
-        users && users.totalPages && <PaginationComponent
-          totalPages={users.totalPages}
-          onPageChange={changePage}
-          page={currentPage}
-        />
+        (users && users.totalPages && users.totalPages > 0) ? (
+          <PaginationComponent
+            totalPages={users.totalPages}
+            onPageChange={changePage}
+            page={currentPage}
+          />
+        ) : <div />
       }
       </div>
     </section>

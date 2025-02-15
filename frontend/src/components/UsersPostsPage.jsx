@@ -94,11 +94,13 @@ export default function UsersPostsPage() {
       }
       <div className="pagination-container w-min flex h-10 mt-6 justify-end ml-auto">
       {
-        postsData && postsData.totalPages && <PaginationComponent
-          totalPages={postsData.totalPages}
-          onPageChange={changePage}
-          page={currentPage}
-        />
+        (postsData && postsData.totalPages && postsData.totalPages > 0) ? (
+          <PaginationComponent
+            totalPages={postsData.totalPages}
+            onPageChange={changePage}
+            page={currentPage}
+          />
+        ) : <div />
       }
       </div>
     </div>
