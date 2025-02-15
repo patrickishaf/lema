@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 
 	"github.com/gin-gonic/gin"
 )
@@ -61,14 +62,15 @@ func GenerateID() (string, error) {
 	return string(result), nil
 }
 
-func GetCurrentDir() {
+func GetCurrentDir() string {
 	dir, err := os.Getwd()
 	if err != nil {
 		log.Println("Error getting current working directory:", err)
-		return
+		return ""
 	}
 
 	log.Println("Current working directory:", dir)
+	return dir
 }
 
 func ListDirectoryContents() {
@@ -93,5 +95,34 @@ func ListDirectoryContents() {
 			continue
 		}
 		log.Printf("Name: %s, IsDir: %v, Size: %d bytes\n", entry.Name(), entry.IsDir(), info.Size())
+	}
+}
+
+// printTree recursively prints the directory tree
+func PrintTree(path string, prefix string) {
+	log.Println("printing directory tree of ", path)
+	// Read the directory contents
+	entries, err := os.ReadDir(path)
+	if err != nil {
+		log.Println("Error reading directory:", err)
+		return
+	}
+
+	// Iterate over the entries
+	for i, entry := range entries {
+		// Determine the prefix for the current entry
+		isLast := i == len(entries)-1
+		log.Printf("%s%s%s\n", prefix, "└── ", entry.Name())
+
+		// If the entry is a directory, recurse into it
+		if entry.IsDir() {
+			newPrefix := prefix
+			if isLast {
+				newPrefix += "    " // Last item, no vertical line
+			} else {
+				newPrefix += "│   " // Not the last item, add a vertical line
+			}
+			PrintTree(filepath.Join(path, entry.Name()), newPrefix)
+		}
 	}
 }
