@@ -54,8 +54,8 @@ export default function NewPostBtn({ userId }) {
           <p className="new-post custom-pale-txt text-sm font-semibold mt-2">New Post</p>
         </button>
       </DialogTrigger>
-      <DialogContent className="min-w-max">
-        <DialogHeader style={{ width: '631px' }}>
+      <DialogContent className="sm:min-w-max dialog-content">
+        <DialogHeader className="sm:min-w-max dialog-header flex flex-col items-start">
           <DialogTitle className="text-4xl mb-6 font-medium">New Post</DialogTitle>
           <h6 className="label custom-pale-txt text-lg font-medium pb-2">Post Title</h6>
           <input type="text" name="title" className="custom-input-txt h-10 py-2 px-4 outline-none border border-solid rounded w-full" placeholder="Give your post a title" value={title} onChange={(e) => {
@@ -65,7 +65,7 @@ export default function NewPostBtn({ userId }) {
           <textarea name="body" id="" placeholder="Write something mind-blowing" className="custom-input-txt py-2 px-4 outline-none border border-solid rounded w-full h-44 resize-none" value={body} onChange={(e) => {
             setBody(e.target.value);
           }}></textarea>
-          <nav className="actions pt-6 flex flex-row gap-2 justify-end">
+          <nav className="actions pt-6 flex flex-row gap-2 justify-end ml-auto">
             <DialogClose>
               <button className="custom-pale-txt py-3 px-4 border-solid rounded border text-sm font-normal">Cancel</button>
             </DialogClose>

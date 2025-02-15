@@ -6,3 +6,31 @@
   background-color: #334155;
   color: white;
 }
+
+@media only screen and (max-width: 640px) {
+  .dialog-content {
+    width: 90vw;
+  }
+}
+
+.dialog-header {
+  width: 631px;
+}
+
+@media only screen and (max-width: 640px) {
+  .dialog-header {
+    width: 100%
+  }
+}
+
+@media only screen and (max-width: 640px) {
+  .dialog-content {
+    width: 100%
+  }
+}
+
+/* @media only screen and (max-width: 640px) {
+  .custom-input {
+    width: 100%;
+  }
+} */
