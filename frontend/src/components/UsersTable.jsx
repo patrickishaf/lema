@@ -18,6 +18,7 @@ import Loader from "./Loader";
 import uuid from "react-uuid";
 import PaginationComponent from "./PaginationComponent";
 import ErrorFallback from "./ErrorFallback";
+import { parseAddress } from "@/utils/helpers";
 
 export default function UsersTable() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -62,7 +63,7 @@ export default function UsersTable() {
                       <p className="detail-txt user-email text-sm whitespace-nowrap overflow-hidden overflow-ellipsis max-w-full">{email}</p>
                     </div>
                     <div className="cell detail three">
-                      <p className="detail-txt user-address text-sm">{address}</p>
+                      <p className="detail-txt user-address text-sm">{parseAddress(address)}</p>
                     </div>
                   </div>
                 ))
