@@ -11,9 +11,9 @@ import (
 )
 
 const (
-	usersSeedFile = "seeds/users.csv"
-	addrsSeedFile = "seeds/addresses.csv"
-	postsSeedFile = "seeds/posts.csv"
+	usersSeedFile = "./seeds/users.csv"
+	addrsSeedFile = "./seeds/addresses.csv"
+	postsSeedFile = "./seeds/posts.csv"
 )
 
 var dbName string = os.Getenv("DB_NAME")
