@@ -1,9 +1,9 @@
 .users-page {
-  padding-left: 20vw;
-  padding-right: 20vw;
+  padding-left: calc((100vw - 856px) / 2);
+  padding-right: calc((100vw - 856px) / 2);
 }
 
-@media only screen and (max-width: 640px) {
+@media only screen and (max-width: 904px) {
   .users-page {
     padding-left: 24px;
     padding-right: 24px;
