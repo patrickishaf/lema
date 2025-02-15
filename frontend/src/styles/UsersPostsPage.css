@@ -2,3 +2,10 @@
   padding-left: 20.2vw;
   padding-right: 20.2vw;
 }
+
+@media only screen and (max-width: 640px) {
+  .users-posts-page {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+}

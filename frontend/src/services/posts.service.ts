@@ -3,7 +3,6 @@ import httpClient from "@/utils/httpclient";
 const postsService = {
   async getPostsByUserId(userId: number, pageNumber: number = 1) {
     const posts = await httpClient.get(`/posts?userId=${userId}&pageNumber=${pageNumber}`);
-    console.log('data returned to component:', posts.data);
     return posts.data;
   },
 
