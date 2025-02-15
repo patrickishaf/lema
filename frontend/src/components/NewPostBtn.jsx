@@ -9,11 +9,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Loader from "./Loader";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import postsService from "@/services/posts.service";
 import { useNavigate } from "react-router-dom";
+import BtnLoader from "./BtnLoader";
 
 export default function NewPostBtn({ userId }) {
   const [title, setTitle] = useState("");
@@ -22,9 +23,10 @@ export default function NewPostBtn({ userId }) {
   const navigateTo = useNavigate();
 
   const queryClient = useQueryClient();
-  const {mutateAsync: createPost, isLoading} = useMutation({
+  const {mutateAsync: createPost, isPending, isSuccess, isError, error} = useMutation({
     mutationFn: postsService.createPost,
-    onSuccess: queryClient.invalidateQueries(['userposts', userId])
+    onSuccess: queryClient.invalidateQueries(['userposts', userId]),
+    mutationKey: ["createpost", title, body],
   })
 
   async function handlePublish() {
@@ -59,13 +61,28 @@ export default function NewPostBtn({ userId }) {
     return true
   }
 
+  useEffect(() => {
+    console.log({
+      isPending,
+      isSuccess,
+      isError,
+      error,
+    })
+  }, [isPending, isSuccess, isError, error]);
+
+  useEffect(() => {
+    if (isSuccess || isError) {
+      setIsOpen(false);
+    }
+  }, [isSuccess, isError])
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen} className="h-full">
       <DialogTrigger asChild>
-        <button className="new-post-btn border-2 rounded-lg p-6 border-dashed flex flex-col items-center justify-center w-full h-full" onClick={() => setIsOpen(true)}>
+        <div className="new-post-btn border-2 rounded-lg p-6 border-dashed flex flex-col items-center justify-center w-full h-full" onClick={() => setIsOpen(true)}>
           <img src={addIc} alt="add new post" className="w-5 h-5" />
           <p className="new-post custom-pale-txt text-sm font-semibold mt-2">New Post</p>
-        </button>
+        </div>
       </DialogTrigger>
       <DialogContent className="sm:min-w-max dialog-content">
         <DialogHeader className="sm:min-w-max dialog-header flex flex-col items-start">
@@ -80,9 +97,9 @@ export default function NewPostBtn({ userId }) {
           }}></textarea>
           <nav className="actions pt-6 flex flex-row gap-2 justify-end ml-auto">
             <DialogClose>
-              <button className="custom-pale-txt py-3 px-4 border-solid rounded border text-sm font-normal">Cancel</button>
+              <div onClick={() => setIsOpen(false)} className="cancel-btn custom-pale-txt py-3 px-4 border-solid rounded border text-sm font-normal">Cancel</div>
             </DialogClose>
-            <button className="publish py-3 px-4 rounded text-sm font-normal flex flex-row items-center gap-2" onClick={async() => {
+            <div className="publish py-3 px-4 rounded text-sm font-normal flex flex-row items-center gap-2 cursor-pointer" onClick={async() => {
               if (title.length == 0 || body.length == 0) {
                 window.alert("You have empty fields in your new post");
                 return;
@@ -95,7 +112,7 @@ export default function NewPostBtn({ userId }) {
                 });
                 setTitle("");
                 setBody("");
-                setIsOpen(false);
+                // setIsOpen(false);
               } catch (err) {
                 console.error("failed to create post. error:", err);
                 setTitle("");
@@ -103,9 +120,15 @@ export default function NewPostBtn({ userId }) {
                 setIsOpen(false);
               }
             }}>
-              {isLoading && <p className="publish-btn-text text-sm font-normal">Publish</p>}
-              {/* {isLoading && <Loader />} */}
-            </button>
+              <p className="publish-btn-text text-sm font-normal">Publish</p>
+              {
+                isPending && (
+                  <div className="btn-loader-box">
+                    <BtnLoader />
+                  </div>
+                )
+              }
+            </div>
           </nav>
         </DialogHeader>
       </DialogContent>

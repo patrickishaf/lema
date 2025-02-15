@@ -2,11 +2,6 @@
   height: 293px;
 }
 
-.publish {
-  background-color: #334155;
-  color: white;
-}
-
 @media only screen and (max-width: 640px) {
   .dialog-content {
     width: 90vw;
@@ -29,8 +24,13 @@
   }
 }
 
-/* @media only screen and (max-width: 640px) {
-  .custom-input {
-    width: 100%;
-  }
-} */
+.cancel-btn {
+  height: 44px;
+}
+
+.publish {
+  background-color: #334155;
+  color: white;
+  height: 44px;
+}
+
