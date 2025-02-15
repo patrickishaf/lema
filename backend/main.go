@@ -18,6 +18,7 @@ import (
 )
 
 func main() {
+	db.SeedDatabase()
 	db.InitializeDb()
 
 	router := gin.Default()
