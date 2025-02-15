@@ -20,6 +20,10 @@ const PaginationComponent = ({ totalPages = 10, onPageChange, page = 1 }) => {
     }
   };
 
+  if (totalPages === 0) {
+    return <></>
+  }
+
 
   const renderPaginationButtons = () => {
     const buttons = [];

@@ -46,6 +46,19 @@ export default function NewPostBtn({ userId }) {
     }
   }
 
+  function canProceed(title, body) {
+    if (title.length < 3) {
+      return 'your title must be at least 3 characters long';
+    }
+    if (body.length < 3) {
+      return 'your body must be at least 3 characters long';
+    }
+    if (title.length < 3 && body.length < 3) {
+      return 'your title and body must be at least 3 characters long'
+    }
+    return true
+  }
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen} className="h-full">
       <DialogTrigger asChild>
@@ -90,8 +103,8 @@ export default function NewPostBtn({ userId }) {
                 setIsOpen(false);
               }
             }}>
-              <p className="publish-btn-text text-sm font-normal">Publish</p>
-              {isLoading && <Loader />}
+              {isLoading && <p className="publish-btn-text text-sm font-normal">Publish</p>}
+              {/* {isLoading && <Loader />} */}
             </button>
           </nav>
         </DialogHeader>
