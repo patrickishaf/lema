@@ -1,6 +1,7 @@
 package common
 
 import (
+	"crypto/rand"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -38,4 +39,22 @@ type PaginatedItems[T any] struct {
 	TotalPages int `json:"totalPages"`
 	TotalItems int `json:"totalItems"`
 	Data       []T `json:"data"`
+}
+
+func GenerateID() (string, error) {
+	length := 32
+	const alphasAndNumbers = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+	bytes := make([]byte, length)
+	_, err := rand.Read(bytes)
+	if err != nil {
+		return "", err
+	}
+
+	result := make([]byte, length)
+	for i, b := range bytes {
+		result[i] = alphasAndNumbers[b%byte(len(alphasAndNumbers))]
+	}
+
+	return string(result), nil
 }

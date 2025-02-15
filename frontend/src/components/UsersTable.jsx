@@ -1,6 +1,5 @@
 import "../styles/UsersTable.css";
 import { useEffect, useState } from "react";
-import { getUsers } from "../data/users";
 import {
   Pagination,
   PaginationContent,

@@ -1,9 +1,11 @@
 package common
 
 import (
-	"crypto/rand"
-
 	"github.com/go-playground/validator/v10"
+)
+
+const (
+	emailSchema = "required,email"
 )
 
 var validate *validator.Validate
@@ -21,20 +23,12 @@ func ValidateStruct(data any) map[string]string {
 	return nil
 }
 
-func GenerateID() (string, error) {
-	length := 32
-	const alphasAndNumbers = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+func ValidateVariable(myVar any, schema string) error {
+	err := validate.Var(myVar, schema)
 
-	bytes := make([]byte, length)
-	_, err := rand.Read(bytes)
 	if err != nil {
-		return "", err
+		return err
 	}
 
-	result := make([]byte, length)
-	for i, b := range bytes {
-		result[i] = alphasAndNumbers[b%byte(len(alphasAndNumbers))]
-	}
-
-	return string(result), nil
+	return nil
 }

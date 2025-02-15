@@ -41,3 +41,12 @@ func TestValidateStruct(t *testing.T) {
 		t.Errorf("failed to validate valid struct")
 	}
 }
+
+func TestValidateVariable(t *testing.T) {
+	email := "joeybloggs.gmail.com"
+
+	err := ValidateVariable(email, emailSchema)
+	if err == nil {
+		t.Errorf("failed to vaidate valid field")
+	}
+}
