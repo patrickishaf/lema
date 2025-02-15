@@ -11,11 +11,12 @@ import (
 )
 
 const (
-	dbName        = "data.db"
 	usersSeedFile = "seeds/users.csv"
 	addrsSeedFile = "seeds/addresses.csv"
 	postsSeedFile = "seeds/posts.csv"
 )
+
+var dbName string = os.Getenv("DB_NAME")
 
 func seedUsersFromFile(filename string) error {
 	destDB, err := gorm.Open(sqlite.Open(dbName), &gorm.Config{})
