@@ -79,7 +79,6 @@ func (h *PostsHandler) createPost(c *gin.Context) {
 }
 
 func (h *PostsHandler) deletePost(c *gin.Context) {
-	// TODO: Add field validation here
 	postId := c.Param("id")
 
 	existingPost, err := h.repo.FindPostById(postId)

@@ -45,7 +45,7 @@ func TestValidateStruct(t *testing.T) {
 func TestValidateVariable(t *testing.T) {
 	email := "joeybloggs.gmail.com"
 
-	err := ValidateVariable(email, emailSchema)
+	err := ValidateVariable(email, SchemaEmail)
 	if err == nil {
 		t.Errorf("failed to vaidate valid field")
 	}
