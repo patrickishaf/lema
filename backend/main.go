@@ -12,17 +12,16 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/joho/godotenv"
 	"github.com/patrickishaf/lema/common"
 	"github.com/patrickishaf/lema/db"
 	"github.com/patrickishaf/lema/handlers"
 )
 
 func main() {
-	err := godotenv.Load()
-	if err != nil {
-		log.Println("failed to load env variables. proceeding anyway")
-	}
+	// err := godotenv.Load()
+	// if err != nil {
+	// 	log.Println("failed to load env variables. proceeding anyway")
+	// }
 	db.InitializeDb()
 	seedErr := db.SeedFromOldDB()
 	if seedErr != nil {
@@ -44,6 +43,8 @@ func main() {
 
 	logger := common.InitializeLogger()
 	router.Use(common.LogRequests(logger))
+
+	common.InitValidator()
 
 	routerV1 := router.Group("/v1")
 
