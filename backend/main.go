@@ -12,19 +12,24 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 	"github.com/patrickishaf/lema/common"
 	"github.com/patrickishaf/lema/db"
 	"github.com/patrickishaf/lema/handlers"
 )
 
 func main() {
-	seedErr := db.SeedDatabase()
+	err := godotenv.Load()
+	if err != nil {
+		log.Println("failed to load env variables. proceeding anyway")
+	}
+	db.InitializeDb()
+	seedErr := db.SeedFromOldDB()
 	if seedErr != nil {
 		log.Printf("failed to seed database. error: %v", seedErr)
 	} else {
 		log.Println("seeded database successfully")
 	}
-	db.InitializeDb()
 
 	router := gin.Default()
 	router.Use(cors.New(cors.Config{
