@@ -2,7 +2,6 @@ package db
 
 import (
 	"log"
-	"math"
 	"time"
 
 	"github.com/patrickishaf/lema/common"
@@ -29,53 +28,15 @@ func (r *PostsRepository) FindPostById(id string) (*models.Post, error) {
 	return &post, nil
 }
 
-func (r *PostsRepository) FindPostsByUserID(userID string, pageNumber int, limit int) (*common.PaginatedItems[models.Post], error) {
+func (r *PostsRepository) FindPostsByUserID(userID string) (*[]models.Post, error) {
 	var posts []models.Post
-
-	totalPostsByUser, err := r.findPostCountByUser(userID)
-	if err != nil {
-		return nil, err
-	}
-
-	if totalPostsByUser == 0 {
-		log.Println("user has no posts")
-		return &common.PaginatedItems[models.Post]{
-			Data:       []models.Post{},
-			PageNumber: 0,
-			PageSize:   limit,
-			TotalPages: 0,
-		}, nil
-	}
-
-	// get the elements at the final page if the pageNumber is out of bounds
-	totalPages := math.Ceil(float64(totalPostsByUser) / float64(limit))
-	if pageNumber > int(totalPages) {
-		pageNumber = int(totalPages)
-	}
-
-	offset := (pageNumber - 1) * limit
-	err = r.db.Limit(limit).Offset(offset).Order("updated_at desc").Where("user_id = ?", userID).Find(&posts).Error
+	err := r.db.Order("updated_at desc").Where("user_id = ?", userID).Find(&posts).Error
 	if err != nil {
 		log.Printf("error in PostsRepository.FindPostsByUserID: %v", err)
 		return nil, err
 	}
 
-	return &common.PaginatedItems[models.Post]{
-		Data:       posts,
-		PageNumber: pageNumber,
-		PageSize:   limit,
-		TotalPages: int(totalPages),
-		TotalItems: int(totalPostsByUser),
-	}, nil
-}
-
-func (r *PostsRepository) findPostCountByUser(userID string) (int64, error) {
-	var count int64
-	if err := r.db.Model(&models.Post{}).Where(&models.Post{UserID: userID}).Count(&count).Error; err != nil {
-		log.Printf("failed to get post count by user id %v", err)
-		return 0, err
-	}
-	return count, nil
+	return &posts, nil
 }
 
 func (r *PostsRepository) InsertPost(title string, body string, userId string) (*models.Post, error) {

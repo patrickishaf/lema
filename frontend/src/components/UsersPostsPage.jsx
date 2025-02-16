@@ -9,7 +9,6 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import userService from "@/services/user.service";
 import Loader from "./Loader";
 import postsService from "@/services/posts.service";
-import PaginationComponent from "./PaginationComponent";
 
 export default function UsersPostsPage() {
   const navigateTo = useNavigate();
@@ -57,7 +56,7 @@ export default function UsersPostsPage() {
               <h1 className="page-title text-6xl font-medium my-4">{userData?.name}</h1>
               <p className="email text-sm custom-pale-txt mb-6">{userData?.email}
                 {
-                  !isPostsLoading && !isPostsError && postsData && <span className="font-medium">{` • ${postsData.totalItems} posts`}</span>
+                  !isPostsLoading && !isPostsError && postsData && <span className="font-medium">{` • ${postsData.length} posts`}</span>
                 }
               </p>
               </>
@@ -71,7 +70,7 @@ export default function UsersPostsPage() {
               <main className="cards-box w-full grid lg:grid-cols-3 md:grid-cols-2 gap-6">
                 <NewPostBtn userId={userId} />
                 {
-                  postsData && postsData.data && postsData.data?.map((post) => (
+                  postsData && postsData.map((post) => (
                     <UserPostCard
                       key={uuid()}
                       post={post}
@@ -92,17 +91,6 @@ export default function UsersPostsPage() {
           </>
         )
       }
-      <div className="pagination-container w-min flex h-10 mt-6 justify-end ml-auto">
-      {
-        (postsData && postsData.totalPages && postsData.totalPages > 0) ? (
-          <PaginationComponent
-            totalPages={postsData.totalPages}
-            onPageChange={changePage}
-            page={currentPage}
-          />
-        ) : <div />
-      }
-      </div>
     </div>
   )
 }

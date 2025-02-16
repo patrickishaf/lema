@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/patrickishaf/lema/common"
@@ -29,20 +28,8 @@ func (h *PostsHandler) getPostsByUserId(c *gin.Context) {
 		common.SendResponse(c, http.StatusBadRequest, "invalid ID param", "failed to get posts by user id")
 		return
 	}
-	pageNumber, err := strconv.Atoi(c.DefaultQuery("pageNumber", "1"))
-	if err != nil {
-		log.Printf("failed to get posts by user id %s. error: %v", userId, err)
-		common.SendResponse(c, http.StatusBadRequest, "invalid page number", "failed to get users")
-		return
-	}
-	pageSize, err := strconv.Atoi(c.DefaultQuery("pageSize", "11"))
-	if err != nil {
-		log.Printf("failed to get posts by user id %s. error: %v", userId, err)
-		common.SendResponse(c, http.StatusBadRequest, "invalid page size", "failed to get users")
-		return
-	}
 
-	postsPaginated, err := h.repo.FindPostsByUserID(userId, pageNumber, pageSize)
+	postsPaginated, err := h.repo.FindPostsByUserID(userId)
 	if err != nil {
 		log.Printf("failed to get posts with user id %s. error: %v", userId, err)
 		common.SendResponse(c, http.StatusInternalServerError, err, "failed to get posts by user")
