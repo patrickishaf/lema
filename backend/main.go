@@ -18,10 +18,6 @@ import (
 )
 
 func main() {
-	// err := godotenv.Load()
-	// if err != nil {
-	// 	log.Println("failed to load env variables. proceeding anyway")
-	// }
 	db.InitializeDb()
 	seedErr := db.SeedFromOldDB()
 	if seedErr != nil {

@@ -13,7 +13,7 @@ const postsService = {
 
   async createPost(data: { title: string, body: string, userId: number }) {
     const post = await httpClient.post("/posts", {
-      user_id: Number(data.userId),
+      user_id: data.userId,
       title: data.title,
       body: data.body,
     });
