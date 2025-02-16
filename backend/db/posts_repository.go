@@ -54,7 +54,7 @@ func (r *PostsRepository) FindPostsByUserID(userID string, pageNumber int, limit
 	}
 
 	offset := (pageNumber - 1) * limit
-	err = r.db.Limit(limit).Offset(offset).Order("id desc").Where("user_id = ?", userID).Find(&posts).Error
+	err = r.db.Limit(limit).Offset(offset).Order("updated_at desc").Where("user_id = ?", userID).Find(&posts).Error
 	if err != nil {
 		log.Printf("error in PostsRepository.FindPostsByUserID: %v", err)
 		return nil, err
